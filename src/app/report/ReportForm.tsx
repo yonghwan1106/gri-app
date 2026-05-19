@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { CATEGORIES } from "@/data/categories";
 import { REGIONS } from "@/data/mockRegions";
-import { Button } from "@/components/ui/button";
 
 interface Classification {
   category: string;
@@ -24,6 +23,30 @@ interface ApiResponse {
   error?: string;
   detail?: string;
 }
+
+const labelStyle: React.CSSProperties = {
+  fontFamily: "JetBrains Mono, monospace",
+  fontSize: "9px",
+  fontWeight: 700,
+  letterSpacing: "0.14em",
+  textTransform: "uppercase",
+  color: "#C4873B",
+  display: "block",
+  marginBottom: "6px",
+};
+
+const inputStyle: React.CSSProperties = {
+  width: "100%",
+  background: "#FBF7F0",
+  border: "1px solid rgba(196,135,59,0.35)",
+  borderRadius: "2px",
+  padding: "10px 14px",
+  fontFamily: "Pretendard Variable, sans-serif",
+  fontSize: "14px",
+  color: "#0A1628",
+  outline: "none",
+  transition: "border-color 0.2s, box-shadow 0.2s",
+};
 
 export function ReportForm() {
   const [category, setCategory] = useState("의료");
@@ -72,156 +95,260 @@ export function ReportForm() {
   }
 
   return (
-    <div className="grid gap-6 lg:grid-cols-[1fr_1fr]">
+    <div className="grid gap-6 lg:grid-cols-2">
+      {/* Form — 독자투고 양식 */}
       <form
         onSubmit={handleSubmit}
-        className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6"
+        className="rounded-sm border bg-paper shadow-ink-sm overflow-hidden"
+        style={{ borderColor: "rgba(196,135,59,0.25)" }}
       >
-        <div className="mb-4 flex items-center justify-between">
-          <h2 className="text-lg font-bold">제보 입력</h2>
-          <button
-            type="button"
-            onClick={applyPreset}
-            className="text-xs font-medium text-bluespot hover:underline"
+        {/* Form header */}
+        <div className="border-b px-6 py-4" style={{ borderColor: "rgba(196,135,59,0.2)", backgroundColor: "#0A1628" }}>
+          <div
+            className="text-[9px] tracking-widest uppercase mb-1"
+            style={{ fontFamily: "JetBrains Mono, monospace", color: "#C4873B" }}
           >
-            예시 자동 채우기
-          </button>
+            경인블루저널 독자투고
+          </div>
+          <div className="flex items-center justify-between">
+            <h2
+              className="text-white text-lg font-bold"
+              style={{ fontFamily: "Fraunces, Georgia, serif" }}
+            >
+              제보 입력란
+            </h2>
+            <button
+              type="button"
+              onClick={applyPreset}
+              className="text-[10px] text-gold-leaf/70 hover:text-gold-leaf transition-colors"
+              style={{ fontFamily: "JetBrains Mono, monospace" }}
+            >
+              예시 자동 채우기
+            </button>
+          </div>
         </div>
 
-        <Field label="카테고리">
-          <select
-            value={category}
-            onChange={(e) => setCategory(e.target.value)}
-            className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm focus:border-bluespot focus:outline-none focus:ring-1 focus:ring-bluespot"
-          >
-            {CATEGORIES.map((c) => (
-              <option key={c.slug} value={c.label}>
-                {c.emoji} {c.label} — {c.description}
-              </option>
-            ))}
-          </select>
-        </Field>
+        {/* Gold leaf rule */}
+        <div className="h-px bg-gold-leaf/20" />
 
-        <Field label="지역 (시·군·구)">
-          <select
-            value={region}
-            onChange={(e) => setRegion(e.target.value)}
-            className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm focus:border-bluespot focus:outline-none focus:ring-1 focus:ring-bluespot"
-          >
-            <optgroup label="경기">
-              {REGIONS.filter((r) => r.province === "경기").map((r) => (
-                <option key={r.id} value={r.name}>
-                  {r.name}
+        <div className="p-6 space-y-5">
+          {/* Category */}
+          <div>
+            <label style={labelStyle}>분류 카테고리</label>
+            <select
+              value={category}
+              onChange={(e) => setCategory(e.target.value)}
+              style={inputStyle}
+              onFocus={(e) => {
+                e.target.style.borderColor = "#C4873B";
+                e.target.style.boxShadow = "0 0 0 3px rgba(196,135,59,0.12)";
+              }}
+              onBlur={(e) => {
+                e.target.style.borderColor = "rgba(196,135,59,0.35)";
+                e.target.style.boxShadow = "none";
+              }}
+            >
+              {CATEGORIES.map((c) => (
+                <option key={c.slug} value={c.label}>
+                  {c.emoji} {c.label} — {c.description}
                 </option>
               ))}
-            </optgroup>
-            <optgroup label="인천">
-              {REGIONS.filter((r) => r.province === "인천").map((r) => (
-                <option key={r.id} value={r.name}>
-                  {r.name}
-                </option>
-              ))}
-            </optgroup>
-          </select>
-        </Field>
-
-        <Field label="제목">
-          <input
-            type="text"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            placeholder="예: 야간 소아 응급 진료 공백"
-            className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm focus:border-bluespot focus:outline-none focus:ring-1 focus:ring-bluespot"
-            maxLength={120}
-          />
-        </Field>
-
-        <Field label="내용">
-          <textarea
-            rows={6}
-            value={body}
-            onChange={(e) => setBody(e.target.value)}
-            placeholder="구체적인 상황, 시간대, 빈도, 영향받는 인원을 적어주세요."
-            className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm focus:border-bluespot focus:outline-none focus:ring-1 focus:ring-bluespot"
-            maxLength={1000}
-          />
-          <div className="mt-1 text-right text-[10px] text-slate-400">
-            {body.length}/1000
+            </select>
           </div>
-        </Field>
 
-        <Field label="이미지 첨부 (선택)">
-          <input
-            type="file"
-            accept="image/*"
-            className="block w-full text-xs file:mr-3 file:rounded-md file:border-0 file:bg-bluespot-50 file:px-3 file:py-1.5 file:text-xs file:font-medium file:text-bluespot hover:file:bg-bluespot-100"
-            disabled
-          />
-          <div className="mt-1 text-[10px] text-slate-400">
-            * v0.5에서 활성화 — 현재 데모는 텍스트만 처리합니다.
+          {/* Region */}
+          <div>
+            <label style={labelStyle}>지역 (시·군·구)</label>
+            <select
+              value={region}
+              onChange={(e) => setRegion(e.target.value)}
+              style={inputStyle}
+              onFocus={(e) => {
+                e.target.style.borderColor = "#C4873B";
+                e.target.style.boxShadow = "0 0 0 3px rgba(196,135,59,0.12)";
+              }}
+              onBlur={(e) => {
+                e.target.style.borderColor = "rgba(196,135,59,0.35)";
+                e.target.style.boxShadow = "none";
+              }}
+            >
+              <optgroup label="경기">
+                {REGIONS.filter((r) => r.province === "경기").map((r) => (
+                  <option key={r.id} value={r.name}>{r.name}</option>
+                ))}
+              </optgroup>
+              <optgroup label="인천">
+                {REGIONS.filter((r) => r.province === "인천").map((r) => (
+                  <option key={r.id} value={r.name}>{r.name}</option>
+                ))}
+              </optgroup>
+            </select>
           </div>
-        </Field>
 
-        {error && (
-          <div className="mb-3 rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-700">
-            {error}
+          {/* Title */}
+          <div>
+            <label style={labelStyle}>제목</label>
+            <input
+              type="text"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              placeholder="예: 야간 소아 응급 진료 공백"
+              style={{ ...inputStyle, fontStyle: title ? "normal" : "italic" }}
+              maxLength={120}
+              onFocus={(e) => {
+                e.target.style.borderColor = "#C4873B";
+                e.target.style.boxShadow = "0 0 0 3px rgba(196,135,59,0.12)";
+              }}
+              onBlur={(e) => {
+                e.target.style.borderColor = "rgba(196,135,59,0.35)";
+                e.target.style.boxShadow = "none";
+              }}
+            />
           </div>
-        )}
 
-        <Button type="submit" size="lg" disabled={loading} className="w-full">
-          {loading ? "AI 분석 중..." : "제출 — Claude Opus 4 분석 시작"}
-        </Button>
+          {/* Body */}
+          <div>
+            <label style={labelStyle}>투고 내용</label>
+            <textarea
+              rows={6}
+              value={body}
+              onChange={(e) => setBody(e.target.value)}
+              placeholder="구체적인 상황, 시간대, 빈도, 영향받는 인원을 적어주세요."
+              style={{ ...inputStyle, resize: "vertical", lineHeight: "1.7" }}
+              maxLength={1000}
+              onFocus={(e) => {
+                e.target.style.borderColor = "#C4873B";
+                e.target.style.boxShadow = "0 0 0 3px rgba(196,135,59,0.12)";
+              }}
+              onBlur={(e) => {
+                e.target.style.borderColor = "rgba(196,135,59,0.35)";
+                e.target.style.boxShadow = "none";
+              }}
+            />
+            <div
+              className="mt-1 text-right"
+              style={{ fontFamily: "JetBrains Mono, monospace", fontSize: "9px", color: "rgba(10,22,40,0.3)" }}
+            >
+              {body.length}/1000
+            </div>
+          </div>
 
-        <p className="mt-3 text-[11px] text-slate-500">
-          제출하면 Claude Opus 4 모델이 제보를 분류하고 BSI 점수·우선순위·다음 단계를 산출합니다.
-          (API 키 미설정 시 mock 응답 반환)
-        </p>
+          {/* Image upload (disabled) */}
+          <div>
+            <label style={labelStyle}>사진 첨부 (선택)</label>
+            <input
+              type="file"
+              accept="image/*"
+              disabled
+              className="block w-full text-xs file:mr-3 file:rounded-sm file:border-0 file:bg-paper-warm file:px-3 file:py-1.5 file:text-[10px] file:font-bold file:text-ink/40 file:cursor-not-allowed opacity-40"
+            />
+            <div
+              className="mt-1"
+              style={{ fontFamily: "JetBrains Mono, monospace", fontSize: "9px", color: "rgba(10,22,40,0.3)" }}
+            >
+              * v0.5에서 활성화 — 현재 데모는 텍스트만 처리합니다.
+            </div>
+          </div>
+
+          {error && (
+            <div
+              className="rounded-sm border px-4 py-3 text-sm"
+              style={{ borderColor: "#B91C1C", backgroundColor: "#FEF2F2", color: "#B91C1C" }}
+            >
+              {error}
+            </div>
+          )}
+
+          {/* Submit button */}
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full py-3 font-bold text-sm transition-colors rounded-sm"
+            style={{
+              fontFamily: "Fraunces, Georgia, serif",
+              backgroundColor: loading ? "rgba(10,22,40,0.4)" : "#0A1628",
+              color: "#FBF7F0",
+              cursor: loading ? "not-allowed" : "pointer",
+            }}
+          >
+            {loading ? "Claude Opus 4 분석 중..." : "투고 제출 — AI 분석 시작"}
+          </button>
+
+          <p
+            className="text-center"
+            style={{ fontFamily: "JetBrains Mono, monospace", fontSize: "9px", color: "rgba(10,22,40,0.35)" }}
+          >
+            제출 시 Claude Opus 4 모델이 제보를 분류하고 BSI·우선순위·다음 단계를 산출합니다.<br />
+            (API 키 미설정 시 mock 응답 반환)
+          </p>
+        </div>
       </form>
 
-      {/* Result */}
-      <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
-        <h2 className="text-lg font-bold">AI 분석 결과</h2>
-        <p className="mt-1 text-xs text-slate-500">
-          BlueSpot AI 교차검증 엔진 — 시민 제보를 자동 분류·우선순위·해결 단계로 변환합니다.
-        </p>
-
-        {!result && !loading && (
-          <div className="mt-6 rounded-lg border border-dashed border-slate-300 bg-slate-50 p-6 text-center text-sm text-slate-500">
-            왼쪽 폼을 작성하고 제출하면 결과가 여기에 표시됩니다.
+      {/* Result — 편집장 검토 결과 */}
+      <div
+        className="rounded-sm border bg-paper shadow-ink-sm overflow-hidden"
+        style={{ borderColor: "rgba(196,135,59,0.25)" }}
+      >
+        {/* Result header */}
+        <div className="border-b px-6 py-4" style={{ borderColor: "rgba(196,135,59,0.2)", backgroundColor: "#F4ECE0" }}>
+          <div
+            className="text-[9px] tracking-widest uppercase mb-1"
+            style={{ fontFamily: "JetBrains Mono, monospace", color: "#C4873B" }}
+          >
+            BlueSpot AI 교차검증 엔진
           </div>
-        )}
+          <h2
+            className="text-ink text-lg font-bold"
+            style={{ fontFamily: "Fraunces, Georgia, serif" }}
+          >
+            편집장 검토 결과
+          </h2>
+        </div>
 
-        {loading && (
-          <div className="mt-6 flex items-center justify-center gap-2 rounded-lg border border-bluespot-200 bg-bluespot-50 p-6 text-sm text-bluespot-700">
-            <span className="inline-block h-3 w-3 animate-pulse rounded-full bg-bluespot" />
-            Claude Opus 4가 제보를 분석하고 있습니다...
-          </div>
-        )}
+        <div className="p-6">
+          {!result && !loading && (
+            <div
+              className="flex flex-col items-center justify-center py-16 text-center rounded-sm border border-dashed"
+              style={{ borderColor: "rgba(196,135,59,0.25)", backgroundColor: "#F4ECE0" }}
+            >
+              <div style={{ fontFamily: "Fraunces, Georgia, serif", fontSize: "2rem", color: "rgba(196,135,59,0.4)" }}>◈</div>
+              <p
+                className="mt-3 text-sm"
+                style={{ fontFamily: "JetBrains Mono, monospace", color: "rgba(10,22,40,0.35)", fontSize: "11px" }}
+              >
+                투고 양식을 작성하고 제출하면<br />
+                결과가 여기에 표시됩니다.
+              </p>
+            </div>
+          )}
 
-        {result?.classification && (
-          <ResultCard
-            result={result.classification}
-            mock={result.mock === true}
-            model={result.model}
-          />
-        )}
+          {loading && (
+            <div
+              className="flex flex-col items-center justify-center py-16 text-center rounded-sm border"
+              style={{ borderColor: "rgba(30,64,175,0.2)", backgroundColor: "#EFF6FF" }}
+            >
+              <div
+                className="inline-block h-5 w-5 rounded-full animate-pulse mb-3"
+                style={{ backgroundColor: "#1E40AF" }}
+              />
+              <p
+                style={{ fontFamily: "JetBrains Mono, monospace", fontSize: "11px", color: "#1E40AF" }}
+              >
+                Claude Opus 4가 제보를 분석하고 있습니다...
+              </p>
+            </div>
+          )}
+
+          {result?.classification && (
+            <ResultCard
+              result={result.classification}
+              mock={result.mock === true}
+              model={result.model}
+            />
+          )}
+        </div>
       </div>
     </div>
-  );
-}
-
-function Field({
-  label,
-  children,
-}: {
-  label: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <label className="mb-3 block">
-      <div className="mb-1 text-xs font-medium text-slate-700">{label}</div>
-      {children}
-    </label>
   );
 }
 
@@ -235,59 +362,114 @@ function ResultCard({
   model?: string;
 }) {
   return (
-    <div className="mt-4 space-y-4">
+    <div className="space-y-5">
       {mock && (
-        <div className="rounded-lg border border-amber-200 bg-amber-50 p-3 text-xs text-amber-800">
-          <strong>Mock 응답:</strong> ANTHROPIC_API_KEY 환경변수가 설정되지 않았습니다.
-          Vercel 환경변수에 키를 등록하면 Claude Opus 4 실시간 분석이 활성화됩니다.
+        <div
+          className="rounded-sm border px-4 py-3 text-xs"
+          style={{ borderColor: "rgba(196,135,59,0.35)", backgroundColor: "#FFFBEB", color: "#92400E" }}
+        >
+          <strong style={{ fontFamily: "JetBrains Mono, monospace" }}>Mock 응답:</strong>{" "}
+          ANTHROPIC_API_KEY 환경변수가 설정되지 않았습니다.
         </div>
       )}
-      <div className="flex flex-wrap items-center gap-2">
-        <span className="rounded-full bg-bluespot-100 px-3 py-1 text-xs font-semibold text-bluespot-800">
-          {result.categoryLabel}
-        </span>
-        <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-700">
-          우선순위 · {result.priority}
-        </span>
-        <span className="rounded-full bg-red-100 px-3 py-1 text-xs font-bold text-red-800">
-          BSI {result.bsi} · {result.bsiLevel}
-        </span>
+
+      {/* BSI headline */}
+      <div
+        className="rounded-sm p-4 border"
+        style={{ borderColor: "rgba(196,135,59,0.2)", backgroundColor: "#F4ECE0" }}
+      >
+        <div style={{ fontFamily: "JetBrains Mono, monospace", fontSize: "9px", color: "#C4873B", letterSpacing: "0.14em", textTransform: "uppercase", marginBottom: "6px" }}>
+          분류 결과
+        </div>
+        <div className="flex flex-wrap items-center gap-2">
+          <span
+            className="px-3 py-1 rounded-sm text-paper text-xs font-bold"
+            style={{ backgroundColor: "#1E40AF", fontFamily: "JetBrains Mono, monospace" }}
+          >
+            {result.categoryLabel}
+          </span>
+          <span
+            className="px-3 py-1 rounded-sm text-xs font-bold"
+            style={{ backgroundColor: "rgba(10,22,40,0.08)", color: "#0A1628", fontFamily: "JetBrains Mono, monospace" }}
+          >
+            우선순위 · {result.priority}
+          </span>
+          <span
+            className="px-3 py-1 rounded-sm text-xs font-bold"
+            style={{ backgroundColor: "#FEE2E2", color: "#B91C1C", fontFamily: "JetBrains Mono, monospace" }}
+          >
+            BSI {result.bsi} · {result.bsiLevel}
+          </span>
+        </div>
       </div>
 
+      {/* Summary */}
       <div>
-        <h3 className="text-sm font-bold text-slate-900">요약</h3>
-        <p className="mt-1 text-sm leading-relaxed text-slate-700">{result.summary}</p>
+        <div style={{ fontFamily: "JetBrains Mono, monospace", fontSize: "9px", color: "#C4873B", letterSpacing: "0.14em", textTransform: "uppercase", marginBottom: "8px" }}>
+          요약
+        </div>
+        <p
+          className="text-sm text-ink leading-relaxed"
+          style={{ wordBreak: "keep-all", lineHeight: "1.8" }}
+        >
+          {result.summary}
+        </p>
       </div>
 
+      {/* Gold divider */}
+      <div className="h-px bg-gold-leaf/20" />
+
+      {/* Next steps */}
       <div>
-        <h3 className="text-sm font-bold text-slate-900">제안된 다음 단계</h3>
-        <ol className="mt-2 space-y-1.5">
+        <div style={{ fontFamily: "JetBrains Mono, monospace", fontSize: "9px", color: "#C4873B", letterSpacing: "0.14em", textTransform: "uppercase", marginBottom: "10px" }}>
+          제안된 다음 단계
+        </div>
+        <ol className="space-y-2.5">
           {result.nextSteps.map((s, i) => (
-            <li key={i} className="flex gap-2 text-sm text-slate-700">
-              <span className="font-bold text-bluespot">{i + 1}.</span>
-              <span>{s}</span>
+            <li key={i} className="flex gap-3 text-sm text-ink/80">
+              <span
+                className="flex h-5 w-5 shrink-0 items-center justify-center rounded-sm text-paper text-[10px] font-bold mt-0.5"
+                style={{ backgroundColor: "#1E40AF", fontFamily: "JetBrains Mono, monospace" }}
+              >
+                {i + 1}
+              </span>
+              <span style={{ lineHeight: "1.7" }}>{s}</span>
             </li>
           ))}
         </ol>
       </div>
 
-      <div>
-        <h3 className="text-sm font-bold text-slate-900">교차검증 데이터 출처</h3>
-        <ul className="mt-2 space-y-1">
+      {/* Data sources */}
+      <div
+        className="rounded-sm p-4 border"
+        style={{ borderColor: "rgba(196,135,59,0.18)", backgroundColor: "#F4ECE0" }}
+      >
+        <div style={{ fontFamily: "JetBrains Mono, monospace", fontSize: "9px", color: "#C4873B", letterSpacing: "0.14em", textTransform: "uppercase", marginBottom: "8px" }}>
+          교차검증 데이터 출처
+        </div>
+        <ul className="space-y-1">
           {result.dataSources.map((d, i) => (
-            <li key={i} className="text-sm text-slate-700">
-              · {d}
+            <li key={i} className="text-xs text-ink/60 flex gap-1.5">
+              <span style={{ color: "#C4873B" }}>—</span>
+              <span>{d}</span>
             </li>
           ))}
         </ul>
       </div>
 
-      <div className="rounded-lg bg-slate-50 p-3 text-xs text-slate-600">
-        <strong className="text-slate-800">AI 산출 근거:</strong> {result.rationale}
+      {/* Rationale */}
+      <div
+        className="rounded-sm border-l-2 pl-4 py-1"
+        style={{ borderColor: "#C4873B" }}
+      >
+        <p className="text-xs text-ink/60 leading-relaxed">
+          <strong className="text-ink/80" style={{ fontFamily: "JetBrains Mono, monospace" }}>AI 산출 근거:</strong>{" "}
+          {result.rationale}
+        </p>
       </div>
 
       {model && (
-        <div className="text-[10px] text-slate-400">
+        <div style={{ fontFamily: "JetBrains Mono, monospace", fontSize: "9px", color: "rgba(10,22,40,0.3)" }}>
           모델: {model}
         </div>
       )}

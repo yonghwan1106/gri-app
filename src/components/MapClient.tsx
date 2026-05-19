@@ -49,71 +49,176 @@ export function MapClient({ initialCategory = "all" }: MapClientProps) {
     );
   }, [category, minBsi]);
 
+  // Top 10 by BSI for sidebar list
+  const topSpots = useMemo(() => {
+    return [...filtered].sort((a, b) => b.bsi - a.bsi).slice(0, 10);
+  }, [filtered]);
+
   return (
-    <div className="grid gap-4 md:grid-cols-[280px_1fr]">
-      {/* Sidebar */}
-      <aside className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
-        <h3 className="text-sm font-bold text-slate-900">필터</h3>
-
-        <div className="mt-3">
-          <label className="text-xs font-medium text-slate-600">카테고리</label>
-          <select
-            value={category}
-            onChange={(e) => setCategory(e.target.value as CategorySlug | "all")}
-            className="mt-1 w-full rounded-lg border border-slate-300 bg-white px-2 py-1.5 text-sm focus:border-bluespot focus:outline-none focus:ring-1 focus:ring-bluespot"
+    <div className="grid gap-4 lg:grid-cols-[300px_1fr]">
+      {/* Sidebar — editorial filter panel */}
+      <aside
+        className="rounded-sm border bg-paper shadow-ink-sm overflow-hidden"
+        style={{ borderColor: "rgba(196,135,59,0.25)" }}
+      >
+        {/* Panel header */}
+        <div className="border-b px-4 py-3" style={{ borderColor: "rgba(196,135,59,0.2)", background: "#0A1628" }}>
+          <div
+            className="text-[9px] tracking-widest uppercase mb-1"
+            style={{ fontFamily: "JetBrains Mono, monospace", color: "#C4873B" }}
           >
-            <option value="all">전체 12개 카테고리</option>
-            {CATEGORIES.map((c) => (
-              <option key={c.slug} value={c.slug}>
-                {c.emoji} {c.label}
-              </option>
+            편집장 픽 — 사각지대 필터
+          </div>
+          <div
+            className="text-white text-sm font-bold"
+            style={{ fontFamily: "Fraunces, Georgia, serif" }}
+          >
+            데이터 카토그래피
+          </div>
+        </div>
+
+        <div className="p-4 space-y-5">
+          {/* Category filter */}
+          <div>
+            <label
+              className="block text-[9px] font-bold tracking-widest uppercase mb-2"
+              style={{ fontFamily: "JetBrains Mono, monospace", color: "#C4873B" }}
+            >
+              카테고리 분류
+            </label>
+            <select
+              value={category}
+              onChange={(e) => setCategory(e.target.value as CategorySlug | "all")}
+              className="input-editorial"
+            >
+              <option value="all">전체 12개 카테고리</option>
+              {CATEGORIES.map((c) => (
+                <option key={c.slug} value={c.slug}>
+                  {c.emoji} {c.label}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* BSI slider */}
+          <div>
+            <div className="flex items-center justify-between mb-2">
+              <label
+                className="text-[9px] font-bold tracking-widest uppercase"
+                style={{ fontFamily: "JetBrains Mono, monospace", color: "#C4873B" }}
+              >
+                최소 BSI 점수
+              </label>
+              <span
+                className="text-ink font-bold text-sm"
+                style={{ fontFamily: "JetBrains Mono, monospace" }}
+              >
+                {minBsi}
+              </span>
+            </div>
+            <input
+              type="range"
+              min={0}
+              max={95}
+              step={5}
+              value={minBsi}
+              onChange={(e) => setMinBsi(Number(e.target.value))}
+              className="w-full"
+              style={{ accentColor: "#C4873B" }}
+            />
+            <div
+              className="flex justify-between text-[9px] mt-1"
+              style={{ fontFamily: "JetBrains Mono, monospace", color: "rgba(10,22,40,0.35)" }}
+            >
+              <span>0</span><span>40</span><span>80</span><span>95</span>
+            </div>
+          </div>
+
+          {/* Count display */}
+          <div
+            className="rounded-sm px-3 py-2.5 border"
+            style={{ backgroundColor: "#F4ECE0", borderColor: "rgba(196,135,59,0.25)" }}
+          >
+            <div className="text-[9px] font-bold tracking-widest uppercase mb-1" style={{ fontFamily: "JetBrains Mono, monospace", color: "#C4873B" }}>
+              현재 표시
+            </div>
+            <div className="text-sm text-ink">
+              <span className="font-black text-xl" style={{ fontFamily: "Fraunces, Georgia, serif", color: "#1E40AF" }}>
+                {filtered.length}
+              </span>
+              <span className="text-ink/40 ml-1" style={{ fontFamily: "JetBrains Mono, monospace", fontSize: "10px" }}>
+                / {SPOTS.length}건
+              </span>
+            </div>
+          </div>
+
+          {/* Legend */}
+          <div>
+            <div className="text-[9px] font-bold tracking-widest uppercase mb-2.5" style={{ fontFamily: "JetBrains Mono, monospace", color: "#C4873B" }}>
+              BSI 색상 범례
+            </div>
+            <div className="space-y-1.5">
+              {[
+                { color: "#B91C1C", label: "80+ 심각" },
+                { color: "#EA580C", label: "60–79 주의" },
+                { color: "#FCD34D", label: "40–59 관찰" },
+                { color: "#84CC16", label: "20–39 양호" },
+                { color: "#22C55E", label: "0–19 안정" },
+              ].map(({ color, label }) => (
+                <div key={label} className="flex items-center gap-2">
+                  <span
+                    className="h-3 w-3 rounded-full border-2 border-paper inline-block shadow-sm"
+                    style={{ backgroundColor: color }}
+                  />
+                  <span className="text-[10px] text-ink/60" style={{ fontFamily: "JetBrains Mono, monospace" }}>
+                    {label}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Top 10 BSI list */}
+        <div className="border-t" style={{ borderColor: "rgba(196,135,59,0.2)" }}>
+          <div className="px-4 py-2.5 border-b" style={{ borderColor: "rgba(196,135,59,0.15)", backgroundColor: "#F4ECE0" }}>
+            <span className="text-[9px] font-bold tracking-widest uppercase" style={{ fontFamily: "JetBrains Mono, monospace", color: "#C4873B" }}>
+              편집장 픽 — BSI Top 10
+            </span>
+          </div>
+          <div className="divide-y divide-amber-100">
+            {topSpots.map((s, i) => (
+              <div key={s.id} className="px-4 py-2.5 flex items-start gap-2.5">
+                <span
+                  className="text-[9px] font-bold mt-0.5 w-4 shrink-0 text-right"
+                  style={{ fontFamily: "JetBrains Mono, monospace", color: "#C4873B" }}
+                >
+                  {i + 1}
+                </span>
+                <div className="min-w-0 flex-1">
+                  <div className="text-[11px] font-medium text-ink leading-snug truncate">
+                    {s.title}
+                  </div>
+                  <div className="mt-0.5">
+                    <BsiBadge score={s.bsi} size="sm" />
+                  </div>
+                </div>
+              </div>
             ))}
-          </select>
-        </div>
-
-        <div className="mt-4">
-          <label className="text-xs font-medium text-slate-600">
-            최소 BSI 점수 — {minBsi}
-          </label>
-          <input
-            type="range"
-            min={0}
-            max={95}
-            step={5}
-            value={minBsi}
-            onChange={(e) => setMinBsi(Number(e.target.value))}
-            className="mt-1 w-full accent-bluespot"
-          />
-          <div className="flex justify-between text-[10px] text-slate-500">
-            <span>0</span>
-            <span>40</span>
-            <span>80</span>
-            <span>95</span>
           </div>
-        </div>
-
-        <div className="mt-5 rounded-lg bg-slate-50 p-3 text-xs">
-          <div className="font-semibold text-slate-700">현재 표시</div>
-          <div className="mt-1 text-slate-600">
-            <strong className="text-bluespot">{filtered.length}건</strong> /
-            전체 {SPOTS.length}건
-          </div>
-        </div>
-
-        <div className="mt-4 space-y-1.5">
-          <h4 className="text-xs font-bold text-slate-700">BSI 색상 범례</h4>
-          <Legend color="#DC2626" label="80+ 심각" />
-          <Legend color="#EA580C" label="60-79 주의" />
-          <Legend color="#FCD34D" label="40-59 관찰" />
-          <Legend color="#84CC16" label="20-39 양호" />
-          <Legend color="#22C55E" label="0-19 안정" />
         </div>
       </aside>
 
       {/* Map */}
-      <div className="h-[70vh] min-h-[500px] overflow-hidden rounded-xl border border-slate-200 shadow-sm">
+      <div
+        className="h-[70vh] min-h-[500px] overflow-hidden rounded-sm border shadow-ink-md"
+        style={{ borderColor: "rgba(196,135,59,0.25)" }}
+      >
         {!mounted ? (
-          <div className="flex h-full items-center justify-center text-slate-500">
+          <div
+            className="flex h-full items-center justify-center text-ink/40"
+            style={{ backgroundColor: "#F4ECE0", fontFamily: "JetBrains Mono, monospace", fontSize: "12px" }}
+          >
             지도 로딩 중...
           </div>
         ) : (
@@ -124,18 +229,23 @@ export function MapClient({ initialCategory = "all" }: MapClientProps) {
             style={{ height: "100%", width: "100%" }}
           >
             <TileLayer
-              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+              attribution='&copy; <a href="https://carto.com/">CartoDB</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+              url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
             />
             {REGIONS.map((r) => (
               <CircleMarker
                 key={r.id}
                 center={[r.lat, r.lng]}
-                radius={5}
-                pathOptions={{ color: "#1E40AF", fillColor: "#1E40AF", fillOpacity: 0.4, weight: 1 }}
+                radius={4}
+                pathOptions={{
+                  color: "#C4873B",
+                  fillColor: "#C4873B",
+                  fillOpacity: 0.25,
+                  weight: 1,
+                }}
               >
-                <Tooltip direction="top" offset={[0, -5]} opacity={0.95}>
-                  <span className="text-xs">
+                <Tooltip direction="top" offset={[0, -4]} opacity={0.97}>
+                  <span style={{ fontFamily: "JetBrains Mono, monospace", fontSize: "10px" }}>
                     {r.province} {r.name} · 인구 {r.population.toLocaleString()}
                   </span>
                 </Tooltip>
@@ -161,36 +271,29 @@ function SpotCircle({ spot }: { spot: Spot }) {
       pathOptions={{
         color: bsiColor(spot.bsi),
         fillColor: bsiColor(spot.bsi),
-        fillOpacity: 0.65,
-        weight: 2,
+        fillOpacity: 0.72,
+        weight: 1.5,
       }}
     >
       <Popup>
-        <div className="space-y-1.5 text-sm">
-          <div className="flex items-center gap-1 text-xs">
-            <span>{cat?.emoji}</span>
-            <span className="font-medium text-slate-700">{cat?.label}</span>
-            <span className="text-slate-400">· {spot.status}</span>
+        <div
+          className="space-y-2 text-sm"
+          style={{ fontFamily: "Pretendard Variable, sans-serif", minWidth: "200px" }}
+        >
+          <div style={{ borderBottom: "1px solid rgba(196,135,59,0.25)", paddingBottom: "6px", marginBottom: "6px" }}>
+            <div style={{ fontFamily: "JetBrains Mono, monospace", fontSize: "9px", color: "#C4873B", letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: "2px" }}>
+              {cat?.label} · {spot.status}
+            </div>
+            <div style={{ fontFamily: "Fraunces, Georgia, serif", fontWeight: 700, fontSize: "13px", color: "#0A1628", lineHeight: "1.3" }}>
+              {spot.title}
+            </div>
           </div>
-          <div className="font-semibold leading-snug">{spot.title}</div>
           <BsiBadge score={spot.bsi} size="sm" />
-          <div className="text-xs text-slate-500">
+          <div style={{ fontFamily: "JetBrains Mono, monospace", fontSize: "9px", color: "rgba(10,22,40,0.45)", marginTop: "4px" }}>
             제보 {spot.reporters}명 · {spot.reportedAt}
           </div>
         </div>
       </Popup>
     </CircleMarker>
-  );
-}
-
-function Legend({ color, label }: { color: string; label: string }) {
-  return (
-    <div className="flex items-center gap-2 text-xs text-slate-600">
-      <span
-        className="inline-block h-3 w-3 rounded-full border border-white shadow"
-        style={{ backgroundColor: color }}
-      />
-      <span>{label}</span>
-    </div>
   );
 }
