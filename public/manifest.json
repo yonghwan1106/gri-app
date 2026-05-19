@@ -1,0 +1,18 @@
+{
+  "name": "BlueSpot — 사각지대 발굴 플랫폼",
+  "short_name": "BlueSpot",
+  "description": "AI×LBS×Journalism 통합 사각지대 발굴 SaaS",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#F8FAFC",
+  "theme_color": "#1E40AF",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
