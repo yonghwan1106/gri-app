@@ -69,7 +69,7 @@ function parseItem(raw: string, isApt: boolean): RentItem {
   };
 }
 
-async function fetchRent(url: string, key: string, lawdCd: string, dealYmd: string, isApt: boolean): Promise<RentItem[]> {
+async function fetchRent(url: string, key: string, lawdCd: string, dealYmd: string, isApt: boolean): Promise<{ items: RentItem[]; rawSample: string }> {
   const params = new URLSearchParams({
     serviceKey: key,
     LAWD_CD: lawdCd,
@@ -90,7 +90,12 @@ async function fetchRent(url: string, key: string, lawdCd: string, dealYmd: stri
     const msg = extract(xml, "resultMsg");
     throw new Error(`MOLIT API result error ${rc}: ${msg}`);
   }
-  return extractAllItems(xml).map((r) => parseItem(r, isApt));
+  const rawItems = extractAllItems(xml);
+  const rawSample = rawItems[0] ?? "";
+  return {
+    items: rawItems.map((r) => parseItem(r, isApt)),
+    rawSample,
+  };
 }
 
 function computeStats(items: RentItem[]) {
@@ -163,9 +168,14 @@ export async function POST(req: Request) {
     );
     const items: RentItem[] = [];
     const errors: string[] = [];
+    let rawSample = "";
     settled.forEach((r, i) => {
-      if (r.status === "fulfilled") items.push(...r.value);
-      else errors.push(`${ymds[i]}: ${(r.reason as Error).message}`);
+      if (r.status === "fulfilled") {
+        items.push(...r.value.items);
+        if (!rawSample && r.value.rawSample) rawSample = r.value.rawSample;
+      } else {
+        errors.push(`${ymds[i]}: ${(r.reason as Error).message}`);
+      }
     });
     const stats = computeStats(items);
 
@@ -178,7 +188,8 @@ export async function POST(req: Request) {
       apiUsed: isApt ? "RTMSDataSvcAptRent" : "RTMSDataSvcRHRent",
       stats,
       itemCount: items.length,
-      items: items.slice(0, 12), // 응답 사이즈 제한
+      items: items.slice(0, 12),
+      rawSample: rawSample.slice(0, 800),
       errors: errors.length > 0 ? errors : undefined,
     });
   } catch (e) {
