@@ -42,18 +42,21 @@ function extractAllItems(xml: string): string[] {
   return items;
 }
 
+// MOLIT OpenAPI는 2024+ 영문 camelCase 태그를 사용 (이전 한글 태그 fallback 유지)
 function parseItem(raw: string, isApt: boolean): RentItem {
-  const deposit = extract(raw, "보증금액") || extract(raw, "보증금") || "0";
-  const monthly = extract(raw, "월세금액") || extract(raw, "월세") || "0";
-  const area = extract(raw, "전용면적");
-  const year = extract(raw, "년");
-  const month = extract(raw, "월");
-  const day = extract(raw, "일");
-  const buildYear = extract(raw, "건축년도");
-  const floor = extract(raw, "층");
-  const jibun = extract(raw, "지번");
-  const dong = extract(raw, "법정동");
-  const name = isApt ? extract(raw, "아파트") : (extract(raw, "연립다세대") || extract(raw, "건물명") || extract(raw, "주택유형"));
+  const deposit = extract(raw, "deposit") || extract(raw, "보증금액") || "0";
+  const monthly = extract(raw, "monthlyRent") || extract(raw, "월세금액") || "0";
+  const area = extract(raw, "excluUseAr") || extract(raw, "전용면적");
+  const year = extract(raw, "dealYear") || extract(raw, "년");
+  const month = extract(raw, "dealMonth") || extract(raw, "월");
+  const day = extract(raw, "dealDay") || extract(raw, "일");
+  const buildYear = extract(raw, "buildYear") || extract(raw, "건축년도");
+  const floor = extract(raw, "floor") || extract(raw, "층");
+  const jibun = extract(raw, "jibun") || extract(raw, "지번");
+  const dong = extract(raw, "umdNm") || extract(raw, "법정동");
+  const name = isApt
+    ? (extract(raw, "aptNm") || extract(raw, "아파트"))
+    : (extract(raw, "mhouseNm") || extract(raw, "연립다세대") || extract(raw, "건물명") || extract(raw, "주택유형"));
 
   return {
     buildingType: isApt ? "아파트" : "연립다세대",
@@ -61,8 +64,8 @@ function parseItem(raw: string, isApt: boolean): RentItem {
     legalDong: dong || undefined,
     jibun: jibun || undefined,
     area: area ? parseFloat(area) : undefined,
-    deposit: parseInt((deposit || "0").replace(/,/g, ""), 10),
-    monthlyRent: parseInt((monthly || "0").replace(/,/g, ""), 10),
+    deposit: parseInt((deposit || "0").replace(/,/g, "").trim(), 10),
+    monthlyRent: parseInt((monthly || "0").replace(/,/g, "").trim(), 10),
     contractYmd: year && month && day ? `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}` : undefined,
     buildYear: buildYear ? parseInt(buildYear, 10) : undefined,
     floor: floor ? parseInt(floor, 10) : undefined,
