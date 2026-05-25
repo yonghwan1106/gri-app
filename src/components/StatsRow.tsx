@@ -1,14 +1,17 @@
-import { getStats } from "@/data/mockSpots";
+import { SPOTS } from "@/data/mockSpots";
 import { REGIONS } from "@/data/mockRegions";
+import { DATA_SOURCES, GYEONGGI_SOURCES } from "@/data/sources";
 
 export function StatsRow() {
-  const stats = getStats();
+  const total = SPOTS.length;
+  const critical = SPOTS.filter((s) => s.bsi >= 80).length;
+  const reports = SPOTS.filter((s) => s.status === "보도예정").length;
   return (
     <div className="grid grid-cols-2 gap-px sm:grid-cols-4 bg-gold-leaf/20 rounded-sm overflow-hidden shadow-ink-sm">
-      <Stat label="전체 사각지대" value={stats.total} suffix="건" accent="#1E40AF" />
-      <Stat label="심각(BSI 80+)" value={stats.critical} suffix="건" accent="#B91C1C" />
-      <Stat label="보도 예정" value={stats.reporting} suffix="건" accent="#C4873B" />
-      <Stat label="대상 지역" value={REGIONS.length} suffix="시·군·구" accent="#166534" />
+      <Stat label="GRI 진단 데이터" value={total} suffix="건" accent="#003876" />
+      <Stat label="위험 시·군 (GRI 80+)" value={critical} suffix="건" accent="#B91C1C" />
+      <Stat label="정책 진단 리포트" value={reports} suffix="건" accent="#C4873B" />
+      <Stat label="대상 (경기 31 + 가점 5종)" value={REGIONS.length} suffix="시·군" accent="#166534" sub={`경기 공공데이터 ${GYEONGGI_SOURCES.length}종 + 보조 ${DATA_SOURCES.length - GYEONGGI_SOURCES.length}종`} />
     </div>
   );
 }
@@ -18,11 +21,13 @@ function Stat({
   value,
   suffix,
   accent,
+  sub,
 }: {
   label: string;
   value: number;
   suffix: string;
   accent: string;
+  sub?: string;
 }) {
   return (
     <div className="bg-paper px-5 py-6 flex flex-col gap-1">
@@ -47,6 +52,11 @@ function Stat({
         </span>
       </div>
       <div className="mt-2 h-0.5 rounded-full w-8" style={{ backgroundColor: accent }} />
+      {sub && (
+        <div className="mt-1 text-[9px] text-ink/40" style={{ fontFamily: "JetBrains Mono, monospace" }}>
+          {sub}
+        </div>
+      )}
     </div>
   );
 }
