@@ -3,16 +3,16 @@ import Link from "next/link";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "BlueSpot — AI×LBS×Journalism 사각지대 발굴 플랫폼",
+  title: "GRI — 경기도 정책 위험도 진단 AI + 시민 전세사기 보호",
   description:
-    "시민이 위치 기반으로 사각지대를 제보하고, AI가 교차검증하며, 솔루션 저널리즘이 답을 제시합니다. 경기·인천 41개 시·군·구 우선.",
-  applicationName: "BlueSpot",
+    "경기도 31개 시·군의 7대 정책 위험도를 AI가 자동 진단하고, 도민에게는 전세사기 위험도를 5초 안에 알려주는 듀얼 모드 AI 플랫폼. 경기데이터드림 + 경기데이터분석포털 직접 활용.",
+  applicationName: "GRI · Gyeonggi Risk Index",
   manifest: "/manifest.json",
-  keywords: ["BlueSpot", "사각지대", "LBS", "솔루션 저널리즘", "경인블루저널", "AI"],
-  authors: [{ name: "경인블루저널 박용환" }],
+  keywords: ["GRI", "경기도", "공공데이터", "AI", "전세사기", "정책 위험도", "Claude Opus", "경기데이터드림"],
+  authors: [{ name: "박용환 (크리에이티브 넥서스)" }],
   openGraph: {
-    title: "BlueSpot — 시민과 AI가 함께 찾는 사각지대",
-    description: "경기·인천 41개 시·군·구에서 의료·교통·복지 등 12개 카테고리 사각지대를 발굴합니다.",
+    title: "GRI — 경기도 31개 시·군 정책 위험도 진단 AI",
+    description: "도청·시군 공무원에게는 정책 위험 진단, 도민에게는 전세사기 즉시 차단을 제공하는 듀얼 AI 플랫폼.",
     type: "website",
   },
 };
@@ -21,7 +21,7 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   maximumScale: 5,
-  themeColor: "#1E40AF",
+  themeColor: "#003876",
 };
 
 export default function RootLayout({
@@ -40,12 +40,12 @@ export default function RootLayout({
 
 function SiteHeader() {
   return (
-    <header className="sticky top-0 z-40 w-full bg-paper/95 backdrop-blur border-b border-gold-leaf/30" style={{ borderTop: '3px solid #0A1628' }}>
+    <header className="sticky top-0 z-40 w-full bg-paper/95 backdrop-blur border-b border-gold-leaf/30" style={{ borderTop: '3px solid #003876' }}>
       {/* Masthead top rule */}
       <div className="border-b border-gold-leaf/20 py-0.5 px-4 hidden sm:block">
         <div className="mx-auto max-w-7xl flex items-center justify-between">
-          <span className="section-tag">경인블루저널 GeoJournalism Platform</span>
-          <span className="page-folio">Vol. 01 · 2026.05 · 경기 아54671</span>
+          <span className="section-tag">GRI · Gyeonggi Risk Index · 경기 공공데이터·AI 듀얼 플랫폼</span>
+          <span className="page-folio">Vol. 01 · 2026.05 · 박용환 단독</span>
         </div>
       </div>
 
@@ -54,30 +54,30 @@ function SiteHeader() {
         <Link href="/" className="flex items-center gap-3 group">
           <span
             className="inline-flex h-9 w-9 items-center justify-center rounded-sm text-paper font-bold text-lg"
-            style={{ fontFamily: 'Fraunces, Georgia, serif', backgroundColor: '#0A1628', letterSpacing: '-0.02em' }}
+            style={{ fontFamily: 'Fraunces, Georgia, serif', backgroundColor: '#003876', letterSpacing: '-0.02em' }}
           >
-            B
+            G
           </span>
           <div className="flex flex-col leading-none">
             <span
               className="font-bold text-ink text-lg leading-none"
               style={{ fontFamily: 'Fraunces, Georgia, serif', letterSpacing: '-0.03em' }}
             >
-              BlueSpot
+              GRI
             </span>
             <span className="hidden text-[9px] text-gold-leaf font-mono tracking-widest uppercase sm:block" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
-              GeoJournalism
+              Gyeonggi Risk Index
             </span>
           </div>
         </Link>
 
-        {/* Nav — editorial serif links */}
+        {/* Nav */}
         <nav className="flex items-center gap-0.5 text-sm">
           {[
-            { href: "/map",                      label: "지도" },
-            { href: "/report",                   label: "독자투고" },
-            { href: "/article/seoul-medical-gap",label: "보도",   hidden: true },
-            { href: "/about",                    label: "발행정보", hidden: true },
+            { href: "/map",    label: "정책 지도" },
+            { href: "/jeonse", label: "전세사기 조회" },
+            { href: "/report", label: "정책 보고서", hidden: true },
+            { href: "/about",  label: "GRI 소개",   hidden: true },
           ].map(({ href, label, hidden }) => (
             <Link
               key={href}
@@ -90,11 +90,11 @@ function SiteHeader() {
             </Link>
           ))}
           <Link
-            href="/report"
-            className="ml-2 px-4 py-1.5 bg-blue-deep text-paper text-sm font-medium rounded-sm hover:bg-ink transition-colors"
-            style={{ fontFamily: 'Fraunces, Georgia, serif', fontWeight: 600 }}
+            href="/jeonse"
+            className="ml-2 px-4 py-1.5 text-paper text-sm font-medium rounded-sm hover:opacity-90 transition-opacity"
+            style={{ fontFamily: 'Fraunces, Georgia, serif', fontWeight: 600, backgroundColor: '#003876' }}
           >
-            제보하기
+            전세사기 즉시 조회
           </Link>
         </nav>
       </div>
@@ -113,47 +113,48 @@ function SiteFooter() {
               className="text-paper text-2xl font-bold leading-none"
               style={{ fontFamily: 'Fraunces, Georgia, serif', letterSpacing: '-0.03em' }}
             >
-              BlueSpot
+              GRI · Gyeonggi Risk Index
             </div>
             <div className="mt-1 text-gold-leaf text-xs tracking-widest uppercase" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
-              AI × LBS × Journalism
+              경기 공공데이터 × Claude Opus 4.7 × Multi-Agent
             </div>
           </div>
           <div className="text-right text-[11px] text-paper/40" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
-            <div>Vol. 01 No. 001 · 2026-05-19</div>
-            <div className="mt-0.5">경기 아54671 · 인터넷신문</div>
+            <div>Vol. 01 No. 001 · 2026-05-29</div>
+            <div className="mt-0.5">박용환 · 크리에이티브 넥서스</div>
           </div>
         </div>
 
         <div className="grid grid-cols-2 gap-6 sm:grid-cols-4 text-sm">
           <FooterCol title="플랫폼">
-            <FooterLink href="/map">사각지대 지도</FooterLink>
-            <FooterLink href="/report">독자투고 · 제보</FooterLink>
-            <FooterLink href="/category/medical">의료 섹션</FooterLink>
-            <FooterLink href="/category/transport">교통 섹션</FooterLink>
+            <FooterLink href="/map">정책 위험도 지도</FooterLink>
+            <FooterLink href="/jeonse">전세사기 조회</FooterLink>
+            <FooterLink href="/report">정책 자동 보고서</FooterLink>
+            <FooterLink href="/category/housing">주거 안전 섹션</FooterLink>
           </FooterCol>
-          <FooterCol title="저널리즘">
-            <FooterLink href="/article/seoul-medical-gap">의료 보도</FooterLink>
-            <FooterLink href="/article/incheon-transport-blind">교통 보도</FooterLink>
-            <FooterLink href="/article/gimpo-welfare-isolation">복지 보도</FooterLink>
+          <FooterCol title="정책 진단 리포트">
+            <FooterLink href="/article/jeonse-risk-yongin">용인 전세사기 위험 리포트</FooterLink>
+            <FooterLink href="/article/medical-gap-gapyeong">가평 의료공백 리포트</FooterLink>
+            <FooterLink href="/article/transit-isolation-yeoncheon">연천 교통약자 리포트</FooterLink>
           </FooterCol>
-          <FooterCol title="발행사">
-            <FooterLink href="/about">경인블루저널</FooterLink>
-            <FooterLink href="/about">박용환 대표</FooterLink>
-            <FooterLink href="/about">로드맵 2026</FooterLink>
+          <FooterCol title="개발자">
+            <FooterLink href="/about">박용환 · 크리에이티브 넥서스</FooterLink>
+            <FooterLink href="/about">기획·개발 일체형</FooterLink>
+            <FooterLink href="/about">86건 수상 이력</FooterLink>
           </FooterCol>
-          <FooterCol title="LBS 챌린지">
-            <span className="text-paper/40 text-xs block leading-snug">2026 KOREA LBS 스타트업 챌린지 출품작</span>
-            <span className="text-paper/40 text-xs block leading-snug mt-1">MVP v0.1 · Claude Opus 4 통합</span>
+          <FooterCol title="공모전 출품작">
+            <span className="text-paper/40 text-xs block leading-snug">2026년 경기도 공공데이터·AI 활용 창업경진대회</span>
+            <span className="text-paper/40 text-xs block leading-snug mt-1">②제품 및 서비스 개발 부문 출품작</span>
+            <span className="text-paper/40 text-xs block leading-snug mt-1">경기데이터드림 + 경기데이터분석포털 활용 (가점 5점)</span>
           </FooterCol>
         </div>
 
         <div className="mt-8 border-t border-paper/10 pt-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
           <p className="text-[11px] text-paper/40" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
-            © 2026 경인블루저널 (박용환 대표) · 인터넷신문 등록 경기 아54671
+            © 2026 박용환 (크리에이티브 넥서스) · GRI · Gyeonggi Risk Index
           </p>
           <p className="text-[11px] text-paper/30">
-            본 데모는 2026 KOREA LBS 스타트업 챌린지 응모용 시제품입니다. Mock 데이터를 일부 사용합니다.
+            본 데모는 2026 경기도 공공데이터·AI 활용 창업경진대회 응모용 시제품입니다.
           </p>
         </div>
       </div>

@@ -32,3 +32,12 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# 민감 자산 (개인정보·서명·도장 등)
+*.JPG
+*.jpg
+*.jpeg
+*.JPEG
+박용환*
+signature*
+stamp*

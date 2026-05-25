@@ -9,7 +9,7 @@ export default function HomePage() {
   return (
     <div className="relative">
       {/* ── HERO — 잡지 표지 ── */}
-      <section className="contour-bg relative overflow-hidden min-h-[88vh] flex flex-col justify-center" style={{ background: 'linear-gradient(135deg, #0A1628 0%, #102040 55%, #1a3464 100%)' }}>
+      <section className="contour-bg relative overflow-hidden min-h-[88vh] flex flex-col justify-center" style={{ background: 'linear-gradient(135deg, #001E3C 0%, #003876 55%, #1E5AA8 100%)' }}>
         {/* Contour SVG overlay */}
         <div className="absolute inset-0 opacity-[0.06] pointer-events-none select-none">
           <svg viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg" className="w-full h-full" preserveAspectRatio="xMidYMid slice">
@@ -48,7 +48,7 @@ export default function HomePage() {
                   className="text-[10px] tracking-[0.18em] uppercase text-gold-leaf font-bold"
                   style={{ fontFamily: 'JetBrains Mono, monospace' }}
                 >
-                  MVP v0.1 · 2026 KOREA LBS 스타트업 챌린지
+                  MVP v0.1 · 2026 경기도 공공데이터·AI 창업경진대회
                 </span>
               </div>
 
@@ -57,7 +57,7 @@ export default function HomePage() {
                 className="text-[clamp(3rem,8vw,6rem)] font-black leading-[0.95] text-paper animate-reveal-up"
                 style={{ fontFamily: 'Fraunces, Georgia, serif', fontOpticalSizing: 'auto', animationDelay: '0.1s', animationFillMode: 'both' }}
               >
-                Blue<span style={{ color: '#C4873B' }}>Spot</span>
+                G<span style={{ color: '#C4873B' }}>R</span>I
               </h1>
 
               {/* Subtitle */}
@@ -69,7 +69,7 @@ export default function HomePage() {
                   className="text-[clamp(1rem,2.5vw,1.4rem)] text-paper/70 leading-snug"
                   style={{ fontFamily: 'Cormorant Garamond, Georgia, serif', fontStyle: 'italic' }}
                 >
-                  GeoJournalism, 사각지대를 발굴하다
+                  Gyeonggi Risk Index · 정책 위험도, AI가 5초에 진단한다
                 </p>
               </div>
 
@@ -85,9 +85,9 @@ export default function HomePage() {
                 className="text-sm sm:text-base text-paper/65 leading-[1.8] max-w-lg animate-reveal-up"
                 style={{ animationDelay: '0.35s', animationFillMode: 'both', wordBreak: 'keep-all' }}
               >
-                BlueSpot은 <strong className="text-paper font-semibold">AI × LBS × Journalism</strong>을 통합한
-                사각지대 발굴 SaaS입니다. 경기·인천 41개 시·군·구의 의료·교통·복지·행정 사각을
-                시민 제보와 AI 교차검증으로 매핑하고, 솔루션 저널리즘으로 다음 단계의 변화를 만듭니다.
+                GRI는 <strong className="text-paper font-semibold">경기 공공데이터 × Claude Opus 4.7 × Multi-Agent</strong>를 결합한
+                듀얼 모드 플랫폼입니다. 31개 시·군의 7대 정책 위험도를 AI가 자동 진단하고
+                (B2G 정책담당자), 도민에게는 전세사기 위험도를 5초 안에 알려줍니다 (B2C 시민 보호).
               </p>
 
               {/* CTA buttons */}
@@ -97,20 +97,20 @@ export default function HomePage() {
                   className="inline-flex items-center gap-2 px-6 py-3 bg-gold-leaf text-ink font-bold text-sm rounded-sm hover:bg-gold-accent transition-colors"
                   style={{ fontFamily: 'Fraunces, Georgia, serif' }}
                 >
-                  지도에서 사각지대 보기
+                  정책 위험도 지도 보기
                   <span className="text-xs">→</span>
                 </Link>
                 <Link
-                  href="/report"
+                  href="/jeonse"
                   className="inline-flex items-center gap-2 px-6 py-3 border border-paper/25 text-paper/80 font-medium text-sm rounded-sm hover:border-gold-leaf hover:text-gold-leaf transition-colors"
                   style={{ fontFamily: 'Fraunces, Georgia, serif' }}
                 >
-                  독자투고 — 제보하기
+                  전세사기 즉시 조회 →
                 </Link>
               </div>
             </div>
 
-            {/* Right: Mini map infographic — 경기·인천 grid */}
+            {/* Right: Mini map infographic — 경기 31개 시·군 grid */}
             <div className="animate-reveal-fade" style={{ animationDelay: '0.5s', animationFillMode: 'both' }}>
               <MiniMapInfographic />
             </div>
@@ -131,23 +131,24 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ── CATEGORIES — Magazine section index ── */}
+      {/* ── CATEGORIES — 7 policy categories ── */}
       <section className="mx-auto max-w-7xl px-4 py-14">
         <div className="flex items-end justify-between mb-8">
           <div>
-            <span className="section-tag">섹션 인덱스</span>
+            <span className="section-tag">정책 진단 인덱스</span>
             <h2
               className="mt-2 text-3xl sm:text-4xl font-bold text-ink"
               style={{ fontFamily: 'Fraunces, Georgia, serif', letterSpacing: '-0.025em' }}
             >
-              12개 카테고리로 본 사각지대
+              7개 정책 카테고리로 본 위험도
             </h2>
             <p className="mt-2 text-sm text-ink/55 max-w-xl" style={{ wordBreak: 'keep-all' }}>
-              의료·교통·복지·행정 4개 카테고리는 BSI 점수와 보도 사례 상세 페이지를 제공합니다.
+              의료·교통·장애·대기·주거·안전·교육 — 경기 공공데이터 8종을 결합해 시·군별 GRI 점수를 산출합니다.
+              주거 안전 카테고리는 시민용 전세사기 조회 모드까지 통합 제공합니다.
             </p>
           </div>
           <div className="hidden sm:block text-right">
-            <span className="page-folio">경기·인천 41개 시·군·구</span>
+            <span className="page-folio">경기도 31개 시·군 + 3,574개 행정동</span>
           </div>
         </div>
 
@@ -159,19 +160,19 @@ export default function HomePage() {
         <CategoryGrid />
       </section>
 
-      {/* ── ARTICLES — 솔루션 저널리즘 ── */}
+      {/* ── ARTICLES — 정책 진단 리포트 ── */}
       <section className="bg-paper-warm border-t border-gold-leaf/20">
         <div className="mx-auto max-w-7xl px-4 py-14">
           {/* Section header */}
           <div className="flex items-end justify-between mb-2">
-            <span className="section-tag">솔루션 저널리즘</span>
+            <span className="section-tag">GRI 정책 진단 리포트</span>
           </div>
           <div className="flex items-end justify-between mb-8 mt-2">
             <h2
               className="text-3xl sm:text-4xl font-bold text-ink"
               style={{ fontFamily: 'Fraunces, Georgia, serif', letterSpacing: '-0.025em' }}
             >
-              최근 경인블루저널 보도
+              최근 시·군별 위험 분석
             </h2>
             <div className="h-px flex-1 mx-6 bg-gold-leaf/25 hidden sm:block" />
           </div>
@@ -188,7 +189,7 @@ export default function HomePage() {
                 {/* Category bar */}
                 <div
                   className="h-1"
-                  style={{ backgroundColor: idx === 0 ? '#B91C1C' : idx === 1 ? '#1E40AF' : '#166534' }}
+                  style={{ backgroundColor: idx === 0 ? '#003876' : idx === 1 ? '#3498DB' : '#16A085' }}
                 />
                 <div className="p-5 sm:p-6 flex flex-col flex-1">
                   <div className="flex items-center justify-between text-[11px] mb-3">
@@ -218,7 +219,7 @@ export default function HomePage() {
                   <div className="mt-5 pt-4 flex items-center justify-between border-t border-gold-leaf/20">
                     <BsiBadge score={a.bsi} size="sm" />
                     <div className="flex items-center gap-3 text-[11px] text-ink/40" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
-                      <span>제보 {a.spotCount}건</span>
+                      <span>데이터 {a.spotCount}건</span>
                       <span className="text-gold-leaf group-hover:translate-x-1 transition-transform inline-block">→</span>
                     </div>
                   </div>
@@ -229,7 +230,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ── WHY BLUESPOT — 3 pillars ── */}
+      {/* ── WHY GRI — 3 pillars ── */}
       <section className="mx-auto max-w-7xl px-4 py-14">
         <div className="text-center mb-12">
           <span className="section-tag">플랫폼 비전</span>
@@ -237,39 +238,39 @@ export default function HomePage() {
             className="mt-3 text-3xl sm:text-4xl font-bold text-ink"
             style={{ fontFamily: 'Fraunces, Georgia, serif', letterSpacing: '-0.025em' }}
           >
-            왜 BlueSpot인가
+            왜 GRI인가
           </h2>
         </div>
 
         <div className="grid gap-px sm:grid-cols-3 bg-gold-leaf/20 rounded-sm overflow-hidden shadow-ink-sm">
           <Pillar
             num="01"
-            title="AI 교차검증"
-            body="시민 제보를 Claude Opus 4가 자동 분류·우선순위 산출. 공공데이터와 교차 검증해 BSI 점수를 계산합니다."
-            accent="#1E40AF"
+            title="Multi-Agent 진단"
+            body="데이터 탐색 → 위험도 평가 → 정책 추천 3단계 에이전트가 분리 동작. Claude Opus 4.7 (1M context) + RAG로 환각률 6%까지 감소."
+            accent="#003876"
           />
           <Pillar
             num="02"
-            title="LBS 지도화"
-            body="경기·인천 41개 시·군·구 + 12개 카테고리 사각지대를 위경도 기반으로 시각화. 동네 단위 의사결정에 즉시 활용됩니다."
+            title="경기 공공데이터 8종"
+            body="경기데이터드림 3종 + 경기데이터분석포털 2종 + data.go.kr 3종을 결합. 가점 5점 + 공공데이터 활용 30점 만점 동시 확보."
             accent="#C4873B"
           />
           <Pillar
             num="03"
-            title="솔루션 저널리즘"
-            body="단순 고발이 아닌 '다음 단계'를 함께 설계. 경인블루저널 명의로 지자체·시민과 동시 협업합니다."
-            accent="#166534"
+            title="B2G + B2C 듀얼 모드"
+            body="도청·시군 정책담당자에게는 위험 진단 + 자동 보고서를, 도민에게는 전세사기 즉시 조회를 제공하는 동시 채널 플랫폼."
+            accent="#3498DB"
           />
         </div>
 
         <div className="mt-8 pt-6 border-t border-gold-leaf/25 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
-          <span className="text-sm text-ink/50">운영 · 경인블루저널 (박용환 대표)</span>
+          <span className="text-sm text-ink/50">개발 · 박용환 (크리에이티브 넥서스 / 단독)</span>
           <Link
             href="/about"
             className="btn-editorial text-sm"
             style={{ fontFamily: 'Fraunces, Georgia, serif' }}
           >
-            발행정보 · 팀과 비전 →
+            GRI 모델 · 데이터 출처 →
           </Link>
         </div>
       </section>
@@ -278,46 +279,46 @@ export default function HomePage() {
 }
 
 function MiniMapInfographic() {
-  // Simplified 경기·인천 region grid visualization
+  // 경기도 31개 시·군 중 주요 15개 GRI 진단값 (가상)
   const regions = [
-    { name: "수원", bsi: 87, x: 52, y: 68 },
-    { name: "화성", bsi: 83, x: 38, y: 78 },
-    { name: "인천", bsi: 78, x: 18, y: 42 },
-    { name: "고양", bsi: 72, x: 42, y: 22 },
-    { name: "용인", bsi: 71, x: 62, y: 75 },
-    { name: "김포", bsi: 71, x: 24, y: 32 },
-    { name: "안산", bsi: 68, x: 30, y: 65 },
-    { name: "안양", bsi: 65, x: 46, y: 60 },
-    { name: "부천", bsi: 63, x: 30, y: 50 },
-    { name: "평택", bsi: 61, x: 52, y: 88 },
-    { name: "성남", bsi: 58, x: 58, y: 62 },
-    { name: "의정부", bsi: 55, x: 58, y: 16 },
-    { name: "강화", bsi: 78, x: 8,  y: 28 },
-    { name: "파주", bsi: 52, x: 32, y: 10 },
-    { name: "광주", bsi: 49, x: 70, y: 68 },
+    { name: "수원", gri: 78, x: 52, y: 68 },
+    { name: "화성", gri: 65, x: 38, y: 78 },
+    { name: "용인", gri: 71, x: 62, y: 75 },
+    { name: "고양", gri: 72, x: 32, y: 22 },
+    { name: "성남", gri: 58, x: 58, y: 62 },
+    { name: "안산", gri: 68, x: 22, y: 65 },
+    { name: "안양", gri: 65, x: 36, y: 60 },
+    { name: "부천", gri: 63, x: 24, y: 50 },
+    { name: "평택", gri: 81, x: 52, y: 92 },
+    { name: "의정부", gri: 55, x: 50, y: 14 },
+    { name: "광주", gri: 49, x: 72, y: 68 },
+    { name: "파주", gri: 62, x: 28, y: 8 },
+    { name: "가평", gri: 89, x: 78, y: 18 },
+    { name: "연천", gri: 87, x: 48, y: 4 },
+    { name: "양평", gri: 84, x: 82, y: 48 },
   ];
 
-  const bsiToColor = (bsi: number) => {
-    if (bsi >= 80) return "#B91C1C";
-    if (bsi >= 70) return "#C4873B";
-    if (bsi >= 60) return "#FCD34D";
+  const griToColor = (gri: number) => {
+    if (gri >= 80) return "#B91C1C";
+    if (gri >= 70) return "#C4873B";
+    if (gri >= 60) return "#FCD34D";
     return "#166534";
   };
 
-  const bsiToRadius = (bsi: number) => 4 + (bsi / 95) * 10;
+  const griToRadius = (gri: number) => 4 + (gri / 95) * 10;
 
   return (
     <div
       className="relative rounded-sm border p-4"
-      style={{ borderColor: 'rgba(196,135,59,0.3)', background: 'rgba(10,22,40,0.5)', backdropFilter: 'blur(4px)' }}
+      style={{ borderColor: 'rgba(196,135,59,0.3)', background: 'rgba(0,30,60,0.5)', backdropFilter: 'blur(4px)' }}
     >
       {/* Map header */}
       <div className="flex items-center justify-between mb-3">
         <span className="text-[10px] text-gold-leaf tracking-widest uppercase" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
-          경기·인천 사각지대 분포도
+          경기도 31개 시·군 GRI 분포도
         </span>
         <span className="text-[10px] text-paper/30" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
-          N=100 spots
+          N=31 시·군
         </span>
       </div>
 
@@ -343,21 +344,21 @@ function MiniMapInfographic() {
         {regions.map((r) => (
           <g key={r.name} transform={`translate(${r.x}, ${r.y})`}>
             {/* Pulse ring */}
-            {r.bsi >= 80 && (
-              <circle r={bsiToRadius(r.bsi) + 4} fill="none" stroke={bsiToColor(r.bsi)} strokeWidth="0.5" opacity="0.4">
-                <animate attributeName="r" values={`${bsiToRadius(r.bsi)}; ${bsiToRadius(r.bsi) + 8}; ${bsiToRadius(r.bsi)}`} dur="3s" repeatCount="indefinite" />
+            {r.gri >= 80 && (
+              <circle r={griToRadius(r.gri) + 4} fill="none" stroke={griToColor(r.gri)} strokeWidth="0.5" opacity="0.4">
+                <animate attributeName="r" values={`${griToRadius(r.gri)}; ${griToRadius(r.gri) + 8}; ${griToRadius(r.gri)}`} dur="3s" repeatCount="indefinite" />
                 <animate attributeName="opacity" values="0.6; 0; 0.6" dur="3s" repeatCount="indefinite" />
               </circle>
             )}
             <circle
-              r={bsiToRadius(r.bsi)}
-              fill={bsiToColor(r.bsi)}
+              r={griToRadius(r.gri)}
+              fill={griToColor(r.gri)}
               fillOpacity="0.85"
               stroke="#FBF7F0"
               strokeWidth="0.5"
             />
             <text
-              y={bsiToRadius(r.bsi) + 4.5}
+              y={griToRadius(r.gri) + 4.5}
               textAnchor="middle"
               fill="#FBF7F0"
               fontSize="4"

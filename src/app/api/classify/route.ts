@@ -5,26 +5,26 @@ import { CATEGORIES } from "@/data/categories";
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-const SYSTEM = `당신은 BlueSpot의 시민 제보 분류 어시스턴트입니다. BlueSpot은 AI×LBS×Journalism 통합 사각지대 발굴 플랫폼이며, 경기·인천 41개 시·군·구에서 시민이 위치 기반으로 사각지대를 제보합니다.
+const SYSTEM = `당신은 GRI(Gyeonggi Risk Index)의 정책 위험도 자동 평가 AI입니다. GRI는 경기 공공데이터(경기데이터드림 + 경기데이터분석포털) + Claude Opus 4.7을 결합한 듀얼 모드 플랫폼으로, 경기도 31개 시·군의 7대 정책 위험도를 자동 진단합니다.
 
 당신의 역할:
-1. 시민이 제출한 제보 텍스트를 12개 카테고리(의료/교통/복지/교육/행정/안전/환경/주거/식품/청년/다문화/디지털) 중 가장 적합한 한 곳으로 분류
-2. BSI(BlueSpot Index) 점수 0~95 산출 (사각지대 심각도; 80+ 심각, 60+ 주의, 40+ 관찰, 20+ 양호, 0+ 안정)
+1. 입력된 정책 진단 요청을 7개 GRI 카테고리(medical/transit/disabled/air/housing/safety/edu) 중 가장 적합한 한 곳으로 분류
+2. GRI 점수 0~95 산출 (정책 위험 심각도; 80+ 심각, 60+ 주의, 40+ 관찰, 20+ 양호, 0+ 안정)
 3. 우선순위 plan (즉시/단기/중기/장기) 결정
-4. 솔루션 저널리즘 관점에서 다음 단계 3개 제안
-5. 교차검증이 필요한 공공데이터 출처 1-2개 추천
+4. 정책 추천 관점에서 다음 단계 3개 제안
+5. 교차검증이 필요한 경기 공공데이터 출처 1-2개 추천
 
 반드시 다음 JSON 스키마를 정확히 따라 응답하세요:
 {
-  "category": "medical" | "transport" | "welfare" | "education" | "admin" | "safety" | "environment" | "housing" | "food" | "youth" | "multicultural" | "digital",
+  "category": "medical" | "transit" | "disabled" | "air" | "housing" | "safety" | "edu",
   "categoryLabel": "한국어 라벨",
   "bsi": 0-95 정수,
   "bsiLevel": "심각|주의|관찰|양호|안정",
   "priority": "즉시|단기|중기|장기",
   "summary": "1-2문장 요약 (한국어)",
   "nextSteps": ["다음 단계 1", "다음 단계 2", "다음 단계 3"],
-  "dataSources": ["공공데이터 출처 1", "출처 2"],
-  "rationale": "분류 및 BSI 산출 근거 2-3문장"
+  "dataSources": ["경기 공공데이터 출처 1", "출처 2"],
+  "rationale": "분류 및 GRI 산출 근거 2-3문장"
 }
 
 JSON만 출력하고 다른 텍스트는 절대 포함하지 마세요.`;
@@ -67,23 +67,23 @@ export async function POST(req: Request) {
       classification: {
         category: fallbackCategory.slug,
         categoryLabel: fallbackCategory.label,
-        bsi: 68,
+        bsi: 72,
         bsiLevel: "주의",
         priority: "단기",
-        summary: `${region ?? "해당 지역"}의 ${fallbackCategory.label} 사각지대로 추정됩니다. (Mock 응답: ANTHROPIC_API_KEY 미설정)`,
+        summary: `${region ?? "해당 시·군"}의 ${fallbackCategory.label} 카테고리에서 GRI 위험도 72점(주의)으로 자동 진단됩니다. (Mock 응답: ANTHROPIC_API_KEY 미설정)`,
         nextSteps: [
-          "관할 지자체 담당 부서로 1차 이송",
-          "BlueSpot 교차검증 — 동일 권역 유사 제보 클러스터링",
-          "솔루션 저널리즘 후보 — 보도 가능성 검토",
+          "경기도청 + 해당 시·군 정책담당자 자동 보고서 발송",
+          "GRI 시민 모드 알림 활성화 — 동일 클러스터 도민에게 사전 통지",
+          "유관 부서 (보건·교통·복지·주택) 합동 점검 우선순위 등록",
         ],
-        dataSources: ["공공데이터포털 (해당 카테고리 데이터셋)", "지자체 통계"],
+        dataSources: ["경기데이터드림 시군별 유동인구", "경기데이터분석포털 KT 유동인구"],
         rationale: "ANTHROPIC_API_KEY 환경변수가 설정되지 않아 mock 응답을 반환합니다. Vercel 대시보드에서 환경변수를 설정하면 Claude Opus 4.7 실시간 분석이 활성화됩니다.",
       },
     });
   }
 
   const userText = [
-    category ? `[제보 카테고리 추정]: ${category}` : null,
+    category ? `[정책 카테고리]: ${category}` : null,
     region ? `[지역]: ${region}` : null,
     title ? `[제목]: ${title}` : null,
     body ? `[내용]: ${body}` : null,
@@ -93,7 +93,6 @@ export async function POST(req: Request) {
 
   try {
     const client = new Anthropic({ apiKey });
-    // Claude Opus 4.7 우선, 실패 시 4.5 fallback. CLAUDE_MODEL env로 오버라이드 가능.
     const model = process.env.CLAUDE_MODEL ?? "claude-opus-4-5";
     const response = await client.messages.create({
       model,
@@ -107,7 +106,6 @@ export async function POST(req: Request) {
       .join("")
       .trim();
 
-    // Claude 응답에서 JSON만 추출
     const jsonMatch = text.match(/\{[\s\S]*\}/);
     if (!jsonMatch) {
       return NextResponse.json(

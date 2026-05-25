@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import dynamic from "next/dynamic";
 import "leaflet/dist/leaflet.css";
 import { SPOTS, type Spot } from "@/data/mockSpots";
-import { REGIONS, GYEONGIN_CENTER } from "@/data/mockRegions";
+import { REGIONS, GYEONGGI_CENTER } from "@/data/mockRegions";
 import { CATEGORIES, type CategorySlug, getCategory } from "@/data/categories";
 import { bsiColor } from "@/lib/utils";
 import { BsiBadge } from "@/components/BsiBadge";
@@ -73,7 +73,7 @@ export function MapClient({ initialCategory = "all" }: MapClientProps) {
             className="text-white text-sm font-bold"
             style={{ fontFamily: "Fraunces, Georgia, serif" }}
           >
-            데이터 카토그래피
+31개 시·군 GRI 진단
           </div>
         </div>
 
@@ -91,7 +91,7 @@ export function MapClient({ initialCategory = "all" }: MapClientProps) {
               onChange={(e) => setCategory(e.target.value as CategorySlug | "all")}
               className="input-editorial"
             >
-              <option value="all">전체 12개 카테고리</option>
+              <option value="all">전체 7개 정책 카테고리</option>
               {CATEGORIES.map((c) => (
                 <option key={c.slug} value={c.slug}>
                   {c.emoji} {c.label}
@@ -107,7 +107,7 @@ export function MapClient({ initialCategory = "all" }: MapClientProps) {
                 className="text-[9px] font-bold tracking-widest uppercase"
                 style={{ fontFamily: "JetBrains Mono, monospace", color: "#C4873B" }}
               >
-                최소 BSI 점수
+                최소 GRI 점수
               </label>
               <span
                 className="text-ink font-bold text-sm"
@@ -155,7 +155,7 @@ export function MapClient({ initialCategory = "all" }: MapClientProps) {
           {/* Legend */}
           <div>
             <div className="text-[9px] font-bold tracking-widest uppercase mb-2.5" style={{ fontFamily: "JetBrains Mono, monospace", color: "#C4873B" }}>
-              BSI 색상 범례
+              GRI 색상 범례
             </div>
             <div className="space-y-1.5">
               {[
@@ -183,7 +183,7 @@ export function MapClient({ initialCategory = "all" }: MapClientProps) {
         <div className="border-t" style={{ borderColor: "rgba(196,135,59,0.2)" }}>
           <div className="px-4 py-2.5 border-b" style={{ borderColor: "rgba(196,135,59,0.15)", backgroundColor: "#F4ECE0" }}>
             <span className="text-[9px] font-bold tracking-widest uppercase" style={{ fontFamily: "JetBrains Mono, monospace", color: "#C4873B" }}>
-              편집장 픽 — BSI Top 10
+위험 시·군 GRI Top 10
             </span>
           </div>
           <div className="divide-y divide-amber-100">
@@ -223,7 +223,7 @@ export function MapClient({ initialCategory = "all" }: MapClientProps) {
           </div>
         ) : (
           <MapContainer
-            center={[GYEONGIN_CENTER.lat, GYEONGIN_CENTER.lng]}
+            center={[GYEONGGI_CENTER.lat, GYEONGGI_CENTER.lng]}
             zoom={9}
             scrollWheelZoom
             style={{ height: "100%", width: "100%" }}
@@ -246,7 +246,7 @@ export function MapClient({ initialCategory = "all" }: MapClientProps) {
               >
                 <Tooltip direction="top" offset={[0, -4]} opacity={0.97}>
                   <span style={{ fontFamily: "JetBrains Mono, monospace", fontSize: "10px" }}>
-                    {r.province} {r.name} · 인구 {r.population.toLocaleString()}
+                    경기 {r.name} · 인구 {r.population.toLocaleString()}
                   </span>
                 </Tooltip>
               </CircleMarker>
@@ -290,7 +290,7 @@ function SpotCircle({ spot }: { spot: Spot }) {
           </div>
           <BsiBadge score={spot.bsi} size="sm" />
           <div style={{ fontFamily: "JetBrains Mono, monospace", fontSize: "9px", color: "rgba(10,22,40,0.45)", marginTop: "4px" }}>
-            제보 {spot.reporters}명 · {spot.reportedAt}
+분석 데이터 {spot.reporters}건 · {spot.reportedAt}
           </div>
         </div>
       </Popup>
