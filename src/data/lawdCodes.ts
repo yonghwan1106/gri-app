@@ -42,18 +42,29 @@ export const LAWD_CODES: LawdCode[] = [
   { city: '양평군', cityShort: '양평', code: '41830', type: '군' },
 ];
 
-/** 주소 문자열에서 시·군을 추출해 LAWD_CD를 반환 */
+/** 주소 문자열에서 시·군을 추출해 LAWD_CD를 반환 (NFC 정규화 + 다중 패턴) */
 export function findLawdByAddress(address: string): LawdCode | null {
-  const cleaned = address.replace(/\s/g, '');
+  if (!address) return null;
+  // 1) Unicode NFC 정규화 (한글 자모 분리 케이스 보정)
+  const norm = address.normalize('NFC');
+  const cleaned = norm.replace(/\s+/g, '');
+
+  // 2) full name 매칭 우선 (수원시, 용인시, 가평군 ...)
   for (const lawd of LAWD_CODES) {
-    if (cleaned.includes(lawd.city) || cleaned.includes(lawd.cityShort + '시') || cleaned.includes(lawd.cityShort + '군')) {
+    if (cleaned.includes(lawd.city)) return lawd;
+  }
+  // 3) short + 시/군 suffix
+  for (const lawd of LAWD_CODES) {
+    if (cleaned.includes(lawd.cityShort + '시') || cleaned.includes(lawd.cityShort + '군')) {
       return lawd;
     }
   }
-  // 시 단위 약식만 있는 경우 fallback
-  for (const lawd of LAWD_CODES) {
-    if (cleaned.includes(lawd.cityShort)) return lawd;
-  }
+  // 4) short only fallback (정확 일치 우선 — 더 긴 이름이 매칭되면 우선)
+  const candidates = LAWD_CODES
+    .filter((lawd) => cleaned.includes(lawd.cityShort))
+    .sort((a, b) => b.cityShort.length - a.cityShort.length);
+  if (candidates.length > 0) return candidates[0];
+
   return null;
 }
 
