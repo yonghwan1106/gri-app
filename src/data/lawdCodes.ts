@@ -42,24 +42,66 @@ export const LAWD_CODES: LawdCode[] = [
   { city: '양평군', cityShort: '양평', code: '41830', type: '군' },
 ];
 
-/** 주소 문자열에서 시·군을 추출해 LAWD_CD를 반환 (NFC 정규화 + 다중 패턴) */
+// 일반구 (특정 시에는 5자리 LAWD_CD가 구별로 별도 부여됨 — 구가 명시되면 우선 매핑)
+interface DistrictCode { parentCity: string; districtName: string; code: string; }
+export const DISTRICT_CODES: DistrictCode[] = [
+  // 수원시 (4개구)
+  { parentCity: '수원시', districtName: '장안구', code: '41111' },
+  { parentCity: '수원시', districtName: '권선구', code: '41113' },
+  { parentCity: '수원시', districtName: '팔달구', code: '41115' },
+  { parentCity: '수원시', districtName: '영통구', code: '41117' },
+  // 성남시 (3개구)
+  { parentCity: '성남시', districtName: '수정구', code: '41131' },
+  { parentCity: '성남시', districtName: '중원구', code: '41133' },
+  { parentCity: '성남시', districtName: '분당구', code: '41135' },
+  // 안양시 (2개구)
+  { parentCity: '안양시', districtName: '만안구', code: '41171' },
+  { parentCity: '안양시', districtName: '동안구', code: '41173' },
+  // 안산시 (2개구)
+  { parentCity: '안산시', districtName: '상록구', code: '41271' },
+  { parentCity: '안산시', districtName: '단원구', code: '41273' },
+  // 고양시 (3개구)
+  { parentCity: '고양시', districtName: '덕양구', code: '41281' },
+  { parentCity: '고양시', districtName: '일산동구', code: '41285' },
+  { parentCity: '고양시', districtName: '일산서구', code: '41287' },
+  // 용인시 (3개구)
+  { parentCity: '용인시', districtName: '처인구', code: '41461' },
+  { parentCity: '용인시', districtName: '기흥구', code: '41463' },
+  { parentCity: '용인시', districtName: '수지구', code: '41465' },
+];
+
+/** 주소 문자열에서 시·군 또는 일반구를 추출해 LAWD_CD를 반환 (NFC 정규화 + 다중 패턴) */
 export function findLawdByAddress(address: string): LawdCode | null {
   if (!address) return null;
-  // 1) Unicode NFC 정규화 (한글 자모 분리 케이스 보정)
   const norm = address.normalize('NFC');
   const cleaned = norm.replace(/\s+/g, '');
 
-  // 2) full name 매칭 우선 (수원시, 용인시, 가평군 ...)
+  // 1) 일반구가 명시된 경우 우선 (수원시 권선구 → 41113)
+  for (const d of DISTRICT_CODES) {
+    if (cleaned.includes(d.parentCity + d.districtName) || cleaned.includes(d.districtName)) {
+      // parent city도 함께 있는지 확인 (안성시 vs 만안구 같은 동음이의 회피)
+      if (cleaned.includes(d.parentCity)) {
+        return { city: `${d.parentCity} ${d.districtName}`, cityShort: d.districtName, code: d.code, type: '시' };
+      }
+    }
+  }
+  // 2) 일반구만 있는 경우 (parentCity 없이) — 고유한 구만 매칭 (분당구, 일산동구 등)
+  for (const d of DISTRICT_CODES) {
+    if (cleaned.includes(d.districtName)) {
+      return { city: `${d.parentCity} ${d.districtName}`, cityShort: d.districtName, code: d.code, type: '시' };
+    }
+  }
+  // 3) 시 전체명 매칭
   for (const lawd of LAWD_CODES) {
     if (cleaned.includes(lawd.city)) return lawd;
   }
-  // 3) short + 시/군 suffix
+  // 4) short + 시/군 suffix
   for (const lawd of LAWD_CODES) {
     if (cleaned.includes(lawd.cityShort + '시') || cleaned.includes(lawd.cityShort + '군')) {
       return lawd;
     }
   }
-  // 4) short only fallback (정확 일치 우선 — 더 긴 이름이 매칭되면 우선)
+  // 5) short only fallback
   const candidates = LAWD_CODES
     .filter((lawd) => cleaned.includes(lawd.cityShort))
     .sort((a, b) => b.cityShort.length - a.cityShort.length);
