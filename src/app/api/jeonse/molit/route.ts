@@ -84,11 +84,11 @@ async function fetchRent(url: string, key: string, lawdCd: string, dealYmd: stri
     throw new Error(`MOLIT API HTTP ${res.status}`);
   }
   const xml = await res.text();
-  // OpenAPI 오류 응답 (XML 안에 errorCode 등)
-  if (xml.includes("<resultCode>") && !xml.includes("<resultCode>00</resultCode>")) {
-    const code = extract(xml, "resultCode");
+  // OpenAPI 정상 응답은 resultCode가 "00" 또는 "000" 등 0으로 시작
+  const rc = extract(xml, "resultCode");
+  if (rc && !/^0+$/.test(rc)) {
     const msg = extract(xml, "resultMsg");
-    throw new Error(`MOLIT API result error ${code}: ${msg}`);
+    throw new Error(`MOLIT API result error ${rc}: ${msg}`);
   }
   return extractAllItems(xml).map((r) => parseItem(r, isApt));
 }
