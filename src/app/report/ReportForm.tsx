@@ -172,13 +172,13 @@ export function ReportForm() {
                 e.target.style.boxShadow = "none";
               }}
             >
-              <optgroup label="경기">
-                {REGIONS.filter((r) => r.province === "경기").map((r) => (
+              <optgroup label="경기 시">
+                {REGIONS.filter((r) => r.kind === "시").map((r) => (
                   <option key={r.id} value={r.name}>{r.name}</option>
                 ))}
               </optgroup>
-              <optgroup label="인천">
-                {REGIONS.filter((r) => r.province === "인천").map((r) => (
+              <optgroup label="경기 군">
+                {REGIONS.filter((r) => r.kind === "군").map((r) => (
                   <option key={r.id} value={r.name}>{r.name}</option>
                 ))}
               </optgroup>
