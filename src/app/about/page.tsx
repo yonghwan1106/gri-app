@@ -1,8 +1,8 @@
 import Link from "next/link";
 
 export const metadata = {
-  title: "발행정보 · 매스트헤드 — BlueSpot 경인블루저널",
-  description: "AI×LBS×Journalism 통합 사각지대 발굴 SaaS — 경인블루저널 박용환 대표",
+  title: "발행정보 · 매스트헤드 — GRI GRI Editorial",
+  description: "AI×LBS×Journalism 통합 위험도 발굴 SaaS — 박용환 (크리에이티브 넥서스) 대표",
 };
 
 export default function AboutPage() {
@@ -32,7 +32,7 @@ export default function AboutPage() {
           className="mt-4 text-lg text-ink/55 italic"
           style={{ fontFamily: "Cormorant Garamond, Georgia, serif" }}
         >
-          경인블루저널 AI×LBS×Journalism 통합 사각지대 발굴 플랫폼
+          GRI Editorial AI×LBS×Journalism 통합 위험도 발굴 플랫폼
         </p>
 
         {/* Gold divider with diamond */}
@@ -73,9 +73,9 @@ export default function AboutPage() {
           시민의 눈으로 본 동네,<br />AI가 모으고, 저널리즘이 답합니다.
         </h2>
         <p className="text-base text-ink/65 leading-[1.85]" style={{ wordBreak: "keep-all" }}>
-          BlueSpot은 <strong className="text-ink/85">AI</strong>, <strong className="text-ink/85">위치 기반(LBS)</strong>,{" "}
-          <strong className="text-ink/85">솔루션 저널리즘</strong>을 통합한 사각지대 발굴 SaaS입니다.
-          경기·인천 41개 시·군·구를 우선 대상으로, 12개 카테고리 사각을 시민 제보와 AI 교차검증으로 매핑합니다.
+          GRI는 <strong className="text-ink/85">AI</strong>, <strong className="text-ink/85">위치 기반(LBS)</strong>,{" "}
+          <strong className="text-ink/85">정책 진단 리포트</strong>을 통합한 위험도 발굴 SaaS입니다.
+          경기도 31개 시·군를 우선 대상으로, 12개 카테고리 사각을 분석 데이터와 AI 교차검증으로 매핑합니다.
         </p>
       </section>
 
@@ -97,7 +97,7 @@ export default function AboutPage() {
             {
               num: "02",
               title: "구조적 간극",
-              body: "시민의 체감과 공공데이터 사이에 구조적 간극이 있습니다. BlueSpot이 이 사이를 메웁니다.",
+              body: "시민의 체감과 공공데이터 사이에 구조적 간극이 있습니다. GRI가 이 사이를 메웁니다.",
             },
             {
               num: "03",
@@ -136,13 +136,13 @@ export default function AboutPage() {
           className="text-[9px] font-bold tracking-[0.14em] uppercase mb-5"
           style={{ fontFamily: "JetBrains Mono, monospace", color: "#C4873B" }}
         >
-          BlueSpot의 3축
+          GRI의 3축
         </div>
         <div className="grid gap-px sm:grid-cols-3 bg-gold-leaf/20 rounded-sm overflow-hidden shadow-ink-sm">
           {[
-            { num: "I", title: "AI 교차검증", body: "시민 제보를 Claude Opus 4가 12개 카테고리로 자동 분류하고 BSI(BlueSpot Index)를 산출합니다.", accent: "#1E40AF" },
-            { num: "II", title: "LBS 지도화", body: "경기·인천 41개 시·군·구 위경도 기반 시각화. 동네 단위 의사결정 도구입니다.", accent: "#C4873B" },
-            { num: "III", title: "솔루션 저널리즘", body: "경인블루저널이 데이터를 보도로, 보도를 정책 협업으로 잇습니다.", accent: "#166534" },
+            { num: "I", title: "AI 교차검증", body: "분석 데이터를 Claude Opus 4가 12개 카테고리로 자동 분류하고 GRI(Gyeonggi Risk Index)를 산출합니다.", accent: "#1E40AF" },
+            { num: "II", title: "LBS 지도화", body: "경기도 31개 시·군 위경도 기반 시각화. 동네 단위 의사결정 도구입니다.", accent: "#C4873B" },
+            { num: "III", title: "정책 진단 리포트", body: "GRI Editorial이 데이터를 보도로, 보도를 정책 협업으로 잇습니다.", accent: "#166534" },
           ].map(({ num, title, body, accent }) => (
             <div key={num} className="bg-paper p-6 flex flex-col">
               <div
@@ -180,7 +180,7 @@ export default function AboutPage() {
             className="text-paper text-xl font-bold"
             style={{ fontFamily: "Fraunces, Georgia, serif" }}
           >
-            경인블루저널 — 매스트헤드
+            GRI Editorial — 매스트헤드
           </h2>
         </div>
 
@@ -217,13 +217,13 @@ export default function AboutPage() {
               className="text-sm text-ink/50 mb-3"
               style={{ fontFamily: "JetBrains Mono, monospace" }}
             >
-              경인블루저널 · 크리에이티브 넥서스
+              GRI Editorial · 크리에이티브 넥서스
             </p>
             <p className="text-sm text-ink/70 leading-relaxed" style={{ wordBreak: "keep-all", lineHeight: "1.85" }}>
-              지역 언론·솔루션 저널리즘·AI 활용 공모전 다수 수상.
-              22개월간 86건 수상 경력을 통해 경기·인천의 사각지대를 시민과 데이터로 함께 풀어내는
+              지역 언론·정책 진단 리포트·AI 활용 공모전 다수 수상.
+              22개월간 86건 수상 경력을 통해 경기·인천의 위험도를 시민과 데이터로 함께 풀어내는
               미디어테크 모델을 설계해왔습니다.
-              BlueSpot은 경인블루저널의 핵심 제품군으로, 동네 저널리즘과 LBS·AI를 결합한 SaaS 플랫폼입니다.
+              GRI는 GRI Editorial의 핵심 제품군으로, 동네 저널리즘과 LBS·AI를 결합한 SaaS 플랫폼입니다.
             </p>
 
             {/* Awards infographic */}
@@ -280,7 +280,7 @@ export default function AboutPage() {
               tag: "MVP v0.1",
               tone: "current" as const,
               title: "시제품 데모 (현재)",
-              body: "정적 데모 + Claude API 제보 분류. 경기·인천 41개 시·군·구 mock 데이터 100건. 본 페이지가 v0.1 결과물입니다.",
+              body: "정적 데모 + Claude API 제보 분류. 경기도 31개 시·군 mock 데이터 100건. 본 페이지가 v0.1 결과물입니다.",
             },
             {
               tag: "v0.5",
@@ -291,8 +291,8 @@ export default function AboutPage() {
             {
               tag: "v1.0",
               tone: "future" as const,
-              title: "전체 12개 카테고리 + 영상 솔루션 저널리즘",
-              body: "12개 카테고리 모두 상세 페이지·BSI 대시보드 제공. 경인블루저널 영상 보도 통합. 지자체 협업 SaaS 라이선스.",
+              title: "전체 12개 카테고리 + 영상 정책 진단 리포트",
+              body: "12개 카테고리 모두 상세 페이지·GRI 대시보드 제공. GRI Editorial 영상 보도 통합. 지자체 협업 SaaS 라이선스.",
             },
             {
               tag: "v2.0",
@@ -352,7 +352,7 @@ export default function AboutPage() {
             className="inline-flex items-center gap-2 px-7 py-3 rounded-sm text-paper font-bold"
             style={{ backgroundColor: "#0A1628", fontFamily: "Fraunces, Georgia, serif" }}
           >
-            지금 제보하기
+            지금 정책 진단 요청
           </Link>
           <Link
             href="/map"
@@ -369,7 +369,7 @@ export default function AboutPage() {
             className="text-[11px] text-ink/30"
             style={{ fontFamily: "JetBrains Mono, monospace" }}
           >
-            © 2026 경인블루저널 · 인터넷신문 등록 경기 아54671 · 발행인 박용환 · heisenbug0306@gmail.com
+            © 2026 GRI Editorial · 인터넷신문 등록 경기 아54671 · 발행인 박용환 · heisenbug0306@gmail.com
           </p>
         </div>
       </section>

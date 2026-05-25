@@ -15,9 +15,9 @@ interface PageProps {
 export async function generateMetadata({ params }: PageProps) {
   const { id } = await params;
   const article = getArticle(id);
-  if (!article) return { title: "찾을 수 없음 — BlueSpot" };
+  if (!article) return { title: "찾을 수 없음 — GRI" };
   return {
-    title: `${article.title} — 경인블루저널`,
+    title: `${article.title} — GRI 정책 진단 리포트`,
     description: article.summary,
   };
 }
@@ -51,7 +51,7 @@ export default async function ArticlePage({ params }: PageProps) {
                 className="px-3 py-1 rounded-sm text-paper text-[10px] font-bold"
                 style={{ backgroundColor: "#0A1628", fontFamily: "JetBrains Mono, monospace" }}
               >
-                경인블루저널
+                GRI Editorial
               </span>
               <span
                 className="px-2.5 py-1 rounded-sm text-[10px] font-bold"
@@ -90,7 +90,7 @@ export default async function ArticlePage({ params }: PageProps) {
                 className="px-3 py-1 rounded-sm text-[10px]"
                 style={{ backgroundColor: "rgba(10,22,40,0.06)", color: "rgba(10,22,40,0.55)", fontFamily: "JetBrains Mono, monospace" }}
               >
-                시민 제보 {a.spotCount}건
+                분석 데이터 {a.spotCount}건
               </span>
               <span
                 className="text-[10px]"
@@ -151,19 +151,19 @@ export default async function ArticlePage({ params }: PageProps) {
                 className="text-[9px] tracking-widest uppercase mb-1"
                 style={{ fontFamily: "JetBrains Mono, monospace", color: "#C4873B" }}
               >
-                솔루션 저널리즘
+                정책 진단 리포트
               </div>
               <h2
                 className="text-paper text-lg font-bold"
                 style={{ fontFamily: "Fraunces, Georgia, serif" }}
               >
-                BlueSpot 제안 — 다음 단계
+                GRI 자동 정책 추천
               </h2>
               <p
                 className="text-paper/40 text-[10px] mt-1"
                 style={{ fontFamily: "JetBrains Mono, monospace" }}
               >
-                단순 고발이 아닌, 실행 가능한 해법을 제시하는 솔루션 저널리즘
+                단순 고발이 아닌, 실행 가능한 해법을 제시하는 정책 진단 리포트
               </p>
             </div>
             <div className="p-6">
@@ -204,8 +204,8 @@ export default async function ArticlePage({ params }: PageProps) {
             className="border-t pt-5 mb-10 text-[11px] text-ink/35 italic"
             style={{ borderColor: "rgba(196,135,59,0.2)", fontFamily: "Cormorant Garamond, Georgia, serif", lineHeight: "1.7" }}
           >
-            본 기사는 BlueSpot AI가 발굴한 사각지대를 경인블루저널 기자가 솔루션 저널리즘 표준에 따라 보도합니다.
-            데이터 출처: BlueSpot 시민 제보 + 공공데이터 교차검증 (Claude Opus 4 모델 사용).
+            본 기사는 GRI Multi-Agent AI가 발굴한 위험도를 GRI Editorial 기자가 정책 진단 리포트 표준에 따라 보도합니다.
+            데이터 출처: GRI 분석 데이터 + 공공데이터 교차검증 (Claude Opus 4 모델 사용).
           </div>
 
           {/* Related articles */}
@@ -248,14 +248,14 @@ export default async function ArticlePage({ params }: PageProps) {
               className="inline-flex items-center gap-2 px-6 py-3 rounded-sm text-sm font-bold text-paper"
               style={{ backgroundColor: "#0A1628", fontFamily: "Fraunces, Georgia, serif" }}
             >
-              비슷한 사각, 제보하기
+              비슷한 사각, 정책 진단 요청
             </Link>
             <Link
               href="/map"
               className="inline-flex items-center gap-2 px-6 py-3 rounded-sm text-sm font-medium border"
               style={{ borderColor: "rgba(196,135,59,0.35)", color: "#0A1628", fontFamily: "Fraunces, Georgia, serif" }}
             >
-              전체 사각지대 지도
+              전체 위험도 지도
             </Link>
           </section>
         </div>
@@ -280,8 +280,8 @@ export default async function ArticlePage({ params }: PageProps) {
             </div>
             <div className="p-4 space-y-4">
               {[
-                { label: "BSI 점수", value: `${a.bsi}점` },
-                { label: "시민 제보", value: `${a.spotCount}건` },
+                { label: "GRI 점수", value: `${a.bsi}점` },
+                { label: "분석 데이터", value: `${a.spotCount}건` },
                 { label: "카테고리", value: a.category },
                 { label: "지역", value: a.region },
                 { label: "발행일", value: formatDate(a.publishedAt) },
@@ -309,7 +309,7 @@ export default async function ArticlePage({ params }: PageProps) {
               className="mt-2 text-[10px] not-italic"
               style={{ fontFamily: "JetBrains Mono, monospace", color: "#C4873B" }}
             >
-              — BlueSpot 편집강령
+              — GRI Editorial 운영원칙
             </footer>
           </blockquote>
         </aside>

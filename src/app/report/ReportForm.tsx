@@ -96,7 +96,7 @@ export function ReportForm() {
 
   return (
     <div className="grid gap-6 lg:grid-cols-2">
-      {/* Form — 독자투고 양식 */}
+      {/* Form — 정책 진단 양식 */}
       <form
         onSubmit={handleSubmit}
         className="rounded-sm border bg-paper shadow-ink-sm overflow-hidden"
@@ -108,7 +108,7 @@ export function ReportForm() {
             className="text-[9px] tracking-widest uppercase mb-1"
             style={{ fontFamily: "JetBrains Mono, monospace", color: "#C4873B" }}
           >
-            경인블루저널 독자투고
+            GRI Editorial 정책 진단
           </div>
           <div className="flex items-center justify-between">
             <h2
@@ -278,7 +278,7 @@ export function ReportForm() {
             className="text-center"
             style={{ fontFamily: "JetBrains Mono, monospace", fontSize: "9px", color: "rgba(10,22,40,0.35)" }}
           >
-            제출 시 Claude Opus 4 모델이 제보를 분류하고 BSI·우선순위·다음 단계를 산출합니다.<br />
+            제출 시 Claude Opus 4 모델이 제보를 분류하고 GRI·우선순위·다음 단계를 산출합니다.<br />
             (API 키 미설정 시 mock 응답 반환)
           </p>
         </div>
@@ -295,7 +295,7 @@ export function ReportForm() {
             className="text-[9px] tracking-widest uppercase mb-1"
             style={{ fontFamily: "JetBrains Mono, monospace", color: "#C4873B" }}
           >
-            BlueSpot AI 교차검증 엔진
+            GRI Multi-Agent AI 교차검증 엔진
           </div>
           <h2
             className="text-ink text-lg font-bold"
@@ -373,7 +373,7 @@ function ResultCard({
         </div>
       )}
 
-      {/* BSI headline */}
+      {/* GRI headline */}
       <div
         className="rounded-sm p-4 border"
         style={{ borderColor: "rgba(196,135,59,0.2)", backgroundColor: "#F4ECE0" }}
@@ -398,7 +398,7 @@ function ResultCard({
             className="px-3 py-1 rounded-sm text-xs font-bold"
             style={{ backgroundColor: "#FEE2E2", color: "#B91C1C", fontFamily: "JetBrains Mono, monospace" }}
           >
-            BSI {result.bsi} · {result.bsiLevel}
+            GRI {result.bsi} · {result.bsiLevel}
           </span>
         </div>
       </div>

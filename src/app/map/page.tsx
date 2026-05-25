@@ -1,33 +1,32 @@
 import { MapClient } from "@/components/MapClient";
 
 export const metadata = {
-  title: "사각지대 지도 — BlueSpot",
-  description: "경기·인천 41개 시·군·구 + 12개 카테고리 사각지대 라이브 지도",
+  title: "GRI 정책 위험도 지도 — 경기 31개 시·군",
+  description: "경기도 31개 시·군 + 7개 정책 카테고리(의료/교통/장애/대기/주거/안전/교육) GRI 위험도 라이브 지도. Claude Opus 4.7 + Multi-Agent 자동 진단.",
 };
 
 export default function MapPage() {
   return (
     <div className="mx-auto max-w-7xl px-4 py-8">
-      {/* Page header — editorial style */}
       <header className="mb-7">
         <span
           className="text-[10px] font-bold tracking-[0.16em] uppercase"
           style={{ fontFamily: "JetBrains Mono, monospace", color: "#C4873B" }}
         >
-          데이터 카토그래피
+          GRI 정책 위험도 진단
         </span>
         <div className="flex flex-wrap items-baseline gap-4 mt-2">
           <h1
             className="text-3xl sm:text-4xl font-bold text-ink"
             style={{ fontFamily: "Fraunces, Georgia, serif", letterSpacing: "-0.025em" }}
           >
-            사각지대 라이브 지도
+            경기 31개 시·군 GRI 라이브 지도
           </h1>
           <span
             className="text-sm text-ink/40"
             style={{ fontFamily: "JetBrains Mono, monospace" }}
           >
-            경기 31개 + 인천 10개 = 41개 시·군·구
+            7개 정책 카테고리 · Claude Opus 4.7
           </span>
         </div>
 
@@ -41,8 +40,8 @@ export default function MapPage() {
         </div>
 
         <p className="mt-3 text-sm text-ink/55 max-w-2xl" style={{ wordBreak: "keep-all" }}>
-          시민 제보 + AI 교차검증으로 매핑된 사각지대 100건.
-          카테고리·BSI 점수 필터로 탐색할 수 있습니다.
+          경기 공공데이터 + Claude Opus 4.7 Multi-Agent로 자동 진단된 GRI 위험도 100건.
+          카테고리·GRI 점수 필터로 탐색할 수 있습니다.
         </p>
       </header>
 

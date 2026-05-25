@@ -18,9 +18,9 @@ interface PageProps {
 export async function generateMetadata({ params }: PageProps) {
   const { slug } = await params;
   const cat = getCategory(slug);
-  if (!cat) return { title: "찾을 수 없음 — BlueSpot" };
+  if (!cat) return { title: "찾을 수 없음 — GRI" };
   return {
-    title: `${cat.label} 사각지대 — BlueSpot`,
+    title: `${cat.label} GRI 위험도 — 경기 31개 시·군`,
     description: cat.description,
   };
 }
@@ -88,7 +88,7 @@ export default async function CategoryDetailPage({ params }: PageProps) {
                 style={{ fontFamily: "Fraunces, Georgia, serif", letterSpacing: "-0.03em" }}
               >
                 {cat.label}
-                <span style={{ color: "#C4873B" }}> 사각지대</span>
+                <span style={{ color: "#C4873B" }}> 위험도</span>
               </h1>
 
               {/* Gold underline */}
@@ -103,9 +103,9 @@ export default async function CategoryDetailPage({ params }: PageProps) {
           {/* KPI bar */}
           <div className="mt-8 grid grid-cols-3 gap-3">
             {[
-              { label: "등록 사각지대", value: spots.length, suffix: "건" },
-              { label: "시민 제보 합계", value: totalReporters, suffix: "명" },
-              { label: "심각(BSI 80+)", value: criticalCount, suffix: "건" },
+              { label: "등록 위험도", value: spots.length, suffix: "건" },
+              { label: "분석 데이터 합계", value: totalReporters, suffix: "명" },
+              { label: "심각(GRI 80+)", value: criticalCount, suffix: "건" },
             ].map(({ label, value, suffix }) => (
               <div
                 key={label}
@@ -141,13 +141,13 @@ export default async function CategoryDetailPage({ params }: PageProps) {
               className="px-3 py-1 rounded-sm text-xs"
               style={{ backgroundColor: "rgba(255,255,255,0.1)", color: "rgba(255,255,255,0.7)", fontFamily: "JetBrains Mono, monospace" }}
             >
-              평균 BSI <strong className="text-paper">{avgBsi}</strong>점
+              평균 GRI <strong className="text-paper">{avgBsi}</strong>점
             </span>
             <span
               className="px-3 py-1 rounded-sm text-xs font-bold"
               style={{ backgroundColor: "#C4873B", color: "#0A1628", fontFamily: "JetBrains Mono, monospace" }}
             >
-              경기·인천 41개 시·군·구 적용
+              경기도 31개 시·군 적용
             </span>
           </div>
         </div>
@@ -190,7 +190,7 @@ export default async function CategoryDetailPage({ params }: PageProps) {
                 className="text-[9px] font-bold tracking-[0.14em] uppercase"
                 style={{ fontFamily: "JetBrains Mono, monospace", color: "#C4873B" }}
               >
-                BSI 상위 사각지대 — 상위 {Math.min(15, spots.length)}건
+                GRI 상위 위험도 — 상위 {Math.min(15, spots.length)}건
               </div>
               <Link
                 href="/map"
@@ -258,7 +258,7 @@ export default async function CategoryDetailPage({ params }: PageProps) {
                 className="text-[9px] font-bold tracking-[0.14em] uppercase mb-5"
                 style={{ fontFamily: "JetBrains Mono, monospace", color: "#C4873B" }}
               >
-                관련 솔루션 저널리즘 보도
+                관련 정책 진단 리포트 보도
               </div>
               <div className="grid gap-4 sm:grid-cols-2">
                 {relatedArticles.map((a) => (
@@ -353,10 +353,10 @@ export default async function CategoryDetailPage({ params }: PageProps) {
               className="font-bold text-ink text-base mb-2"
               style={{ fontFamily: "Fraunces, Georgia, serif" }}
             >
-              내 동네 {cat.label} 사각지대를 알려주세요
+              경기 31개 시·군 {cat.label} 위험도를 알려주세요
             </h3>
             <p className="text-xs text-ink/50 mb-4" style={{ wordBreak: "keep-all" }}>
-              시민의 제보가 다음 보도와 정책을 만듭니다.
+              GRI Multi-Agent가 자동으로 시·군별 정책 위험도를 진단합니다.
             </p>
             <div className="flex flex-col gap-2">
               <Link
@@ -364,7 +364,7 @@ export default async function CategoryDetailPage({ params }: PageProps) {
                 className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-sm text-sm font-bold text-paper transition-colors"
                 style={{ backgroundColor: "#0A1628", fontFamily: "Fraunces, Georgia, serif" }}
               >
-                제보하기
+                정책 진단 요청
               </Link>
               <Link
                 href="/map"
