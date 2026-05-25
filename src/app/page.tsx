@@ -10,9 +10,9 @@ export default function HomePage() {
     <div className="relative">
       {/* ── HERO — 잡지 표지 ── */}
       <section className="contour-bg relative overflow-hidden min-h-[88vh] flex flex-col justify-center" style={{ background: 'linear-gradient(135deg, #001E3C 0%, #003876 55%, #1E5AA8 100%)' }}>
-        {/* Contour SVG overlay */}
-        <div className="absolute inset-0 opacity-[0.06] pointer-events-none select-none">
-          <svg viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg" className="w-full h-full" preserveAspectRatio="xMidYMid slice">
+        {/* Contour SVG overlay — must be sized to 100% to not push hero height */}
+        <div className="absolute inset-0 opacity-[0.06] pointer-events-none select-none" style={{ overflow: 'hidden' }}>
+          <svg viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}>
             <g fill="none" stroke="#C4873B" strokeWidth="0.8">
               <ellipse cx="600" cy="300" rx="350" ry="260"/>
               <ellipse cx="600" cy="300" rx="300" ry="218"/>
