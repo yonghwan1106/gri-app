@@ -143,7 +143,7 @@ export default function HomePage() {
               7개 정책 카테고리로 본 위험도
             </h2>
             <p className="mt-2 text-sm text-ink/55 max-w-xl" style={{ wordBreak: 'keep-all' }}>
-              의료·교통·장애·대기·주거·안전·교육 — 경기 공공데이터 8종을 결합해 시·군별 GRI 점수를 산출합니다.
+              의료·교통·장애·대기·주거·안전·교육 — 경기 공공데이터 15종을 결합해 시·군별 GRI 점수를 산출합니다.
               주거 안전 카테고리는 시민용 전세사기 조회 모드까지 통합 제공합니다.
             </p>
           </div>
@@ -251,8 +251,8 @@ export default function HomePage() {
           />
           <Pillar
             num="02"
-            title="경기 공공데이터 8종"
-            body="경기데이터드림 3종 + 경기데이터분석포털 2종 + data.go.kr 3종을 결합. 가점 5점 + 공공데이터 활용 30점 만점 동시 확보."
+            title="경기 공공데이터 15종"
+            body="경기데이터드림 9종 + 경기데이터분석포털 2종 + data.go.kr 4종을 결합. 모든 URL·갱신주기·라이선스를 /data 페이지에 공개해 평가위원이 외부 포털에서 직접 검증 가능합니다."
             accent="#C4873B"
           />
           <Pillar
@@ -265,13 +265,36 @@ export default function HomePage() {
 
         <div className="mt-8 pt-6 border-t border-gold-leaf/25 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
           <span className="text-sm text-ink/50">개발 · 박용환 (크리에이티브 넥서스 / 단독)</span>
-          <Link
-            href="/about"
-            className="btn-editorial text-sm"
-            style={{ fontFamily: 'Fraunces, Georgia, serif' }}
-          >
-            GRI 모델 · 데이터 출처 →
-          </Link>
+          <div className="flex flex-wrap gap-2">
+            <Link
+              href="/data"
+              className="inline-flex items-center gap-1 px-3 py-1.5 rounded-sm text-[11px] font-bold border"
+              style={{ fontFamily: 'JetBrains Mono, monospace', borderColor: '#1E40AF', color: '#1E40AF', backgroundColor: 'rgba(30,64,175,0.06)' }}
+            >
+              데이터 카탈로그 15종 →
+            </Link>
+            <Link
+              href="/eval"
+              className="inline-flex items-center gap-1 px-3 py-1.5 rounded-sm text-[11px] font-bold border"
+              style={{ fontFamily: 'JetBrains Mono, monospace', borderColor: '#166534', color: '#166534', backgroundColor: 'rgba(22,101,52,0.06)' }}
+            >
+              AI 정확도 88% 검증 →
+            </Link>
+            <Link
+              href="/biz"
+              className="inline-flex items-center gap-1 px-3 py-1.5 rounded-sm text-[11px] font-bold border"
+              style={{ fontFamily: 'JetBrains Mono, monospace', borderColor: '#B91C1C', color: '#B91C1C', backgroundColor: 'rgba(185,28,28,0.06)' }}
+            >
+              3년 매출 5.7억 →
+            </Link>
+            <Link
+              href="/about"
+              className="btn-editorial text-sm"
+              style={{ fontFamily: 'Fraunces, Georgia, serif' }}
+            >
+              GRI 소개 →
+            </Link>
+          </div>
         </div>
       </section>
     </div>

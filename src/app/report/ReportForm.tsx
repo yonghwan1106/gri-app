@@ -49,7 +49,7 @@ const inputStyle: React.CSSProperties = {
 };
 
 export function ReportForm() {
-  const [category, setCategory] = useState("의료");
+  const [category, setCategory] = useState("의료 접근성");
   const [region, setRegion] = useState("수원시");
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
@@ -85,13 +85,41 @@ export function ReportForm() {
     }
   }
 
-  function applyPreset() {
-    setCategory("의료");
-    setRegion("화성시");
-    setTitle("화성 봉담읍 야간 소아 응급 진료 공백");
-    setBody(
-      "화성시 봉담읍에서 평일 21시 이후 도보 30분 내 소아 응급실이 없습니다. 아이가 밤에 갑자기 열이 났는데, 분당까지 차로 40분 이상 이동해야 했습니다. 같은 동네 학부모들도 비슷한 경험을 이야기합니다. 평일·주말 모두 야간 소아 진료 공백이 보입니다."
-    );
+  const PRESETS: { label: string; category: string; region: string; title: string; body: string }[] = [
+    {
+      label: "① 의료 · 화성 야간 소아",
+      category: "의료 접근성",
+      region: "화성시",
+      title: "화성 봉담읍 야간 소아 응급 진료 공백",
+      body:
+        "화성시 봉담읍에서 평일 21시 이후 도보 30분 내 소아 응급실이 없습니다. 아이가 밤에 갑자기 열이 났는데, 분당까지 차로 40분 이상 이동해야 했습니다. 같은 동네 학부모들도 비슷한 경험을 이야기합니다. 평일·주말 모두 야간 소아 진료 공백이 보입니다.",
+    },
+    {
+      label: "② 교통 · 김포 출퇴근 정체",
+      category: "교통 약자",
+      region: "김포시",
+      title: "김포골드라인 출근시간 혼잡도 극심",
+      body:
+        "김포골드라인 풍무역에서 평일 07:30~08:30 사이 열차에 탑승조차 어렵습니다. 2~3대를 보내야 겨우 탈 수 있고, 객실 내 압사 위험을 호소하는 시민이 늘고 있습니다. 김포공항 환승 인구가 매년 늘어나는데 추가 증편이나 광역버스 우회 노선이 보이지 않습니다. 인근 직장인·학생 모두 매일 동일한 고통을 호소합니다.",
+    },
+    {
+      label: "③ 주거 · 부천 전세사기 의심",
+      category: "주거 안전",
+      region: "부천시",
+      title: "부천 중동 신축빌라 전세사기 의심 다발",
+      body:
+        "부천시 중동 일대 신축빌라에서 보증금 미반환 사례가 최근 6개월 새 5건 이상 발생했습니다. 동일 명의 임대인이 여러 호실을 매입한 정황이 있고, 시세보다 20% 이상 높은 감정가로 보증보험을 통과시킨 사례도 확인됩니다. 피해 세입자는 대부분 사회초년생·신혼부부로, HUG 신고는 했지만 회수까지 평균 1년 이상 걸린다고 합니다.",
+    },
+  ];
+
+  function applyPreset(idx: number) {
+    const p = PRESETS[idx];
+    setCategory(p.category);
+    setRegion(p.region);
+    setTitle(p.title);
+    setBody(p.body);
+    setResult(null);
+    setError(null);
   }
 
   return (
@@ -117,14 +145,38 @@ export function ReportForm() {
             >
               제보 입력란
             </h2>
-            <button
-              type="button"
-              onClick={applyPreset}
-              className="text-[10px] text-gold-leaf/70 hover:text-gold-leaf transition-colors"
-              style={{ fontFamily: "JetBrains Mono, monospace" }}
+            <span
+              className="text-[9px] text-gold-leaf/60"
+              style={{ fontFamily: "JetBrains Mono, monospace", letterSpacing: "0.14em", textTransform: "uppercase" }}
             >
-              예시 자동 채우기
-            </button>
+              샘플 프리셋 — 클릭하여 즉시 채우기
+            </span>
+          </div>
+          <div className="mt-3 flex flex-wrap gap-1.5">
+            {PRESETS.map((p, i) => (
+              <button
+                key={i}
+                type="button"
+                onClick={() => applyPreset(i)}
+                className="px-2.5 py-1 text-[10px] rounded-sm border transition-colors"
+                style={{
+                  fontFamily: "JetBrains Mono, monospace",
+                  borderColor: "rgba(196,135,59,0.4)",
+                  color: "#C4873B",
+                  backgroundColor: "rgba(196,135,59,0.06)",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.backgroundColor = "#C4873B";
+                  e.currentTarget.style.color = "#0A1628";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.backgroundColor = "rgba(196,135,59,0.06)";
+                  e.currentTarget.style.color = "#C4873B";
+                }}
+              >
+                {p.label}
+              </button>
+            ))}
           </div>
         </div>
 

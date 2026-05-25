@@ -76,6 +76,9 @@ function SiteHeader() {
           {[
             { href: "/map",    label: "정책 지도" },
             { href: "/jeonse", label: "전세사기 조회" },
+            { href: "/data",   label: "데이터 카탈로그", hidden: true },
+            { href: "/eval",   label: "AI 성능 검증",   hidden: true },
+            { href: "/biz",    label: "사업화 BM",       hidden: true },
             { href: "/report", label: "정책 보고서", hidden: true },
             { href: "/about",  label: "GRI 소개",   hidden: true },
           ].map(({ href, label, hidden }) => (
@@ -142,10 +145,13 @@ function SiteFooter() {
             <FooterLink href="/about">기획·개발 일체형</FooterLink>
             <FooterLink href="/about">86건 수상 이력</FooterLink>
           </FooterCol>
-          <FooterCol title="공모전 출품작">
-            <span className="text-paper/40 text-xs block leading-snug">2026년 경기도 공공데이터·AI 활용 창업경진대회</span>
-            <span className="text-paper/40 text-xs block leading-snug mt-1">②제품 및 서비스 개발 부문 출품작</span>
-            <span className="text-paper/40 text-xs block leading-snug mt-1">경기데이터드림 + 경기데이터분석포털 활용 (가점 5점)</span>
+          <FooterCol title="평가위원 검증">
+            <FooterLink href="/data">데이터 카탈로그 (15종)</FooterLink>
+            <FooterLink href="/eval">AI 분류 성능 평가</FooterLink>
+            <FooterLink href="/biz">BM · 3년 매출 · 경쟁비교</FooterLink>
+            <span className="text-paper/40 text-xs block leading-snug mt-2">2026 경기도 공공데이터·AI 창업경진대회</span>
+            <span className="text-paper/40 text-xs block leading-snug mt-0.5">②제품 및 서비스 개발 부문</span>
+            <span className="text-paper/40 text-xs block leading-snug mt-0.5">경기데이터드림 + 분석포털 직접 활용 (가점 5점)</span>
           </FooterCol>
         </div>
 
