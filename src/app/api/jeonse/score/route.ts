@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import Anthropic from "@anthropic-ai/sdk";
+import { findDemoCase } from "@/data/jeonseDemoCache";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -158,6 +159,26 @@ export async function POST(req: Request) {
 
   if (!address || !deposit) {
     return NextResponse.json({ error: "address와 deposit 필드는 필수입니다." }, { status: 400 });
+  }
+
+  // 발표심사 시연용 데모 캐시 (5건 사전 응답) — Multi-Agent 21초 대기 회피
+  // 매칭되면 즉시 반환 (5초 보장), 미매칭 시 라이브 Multi-Agent 호출
+  const demoCase = findDemoCase(address);
+  if (demoCase && !single) {
+    return NextResponse.json({
+      mock: false,
+      mode: "multi-agent",
+      cached: true,
+      cachePattern: demoCase.matchPattern,
+      assessment: demoCase.response,
+      consensus: {
+        ...demoCase.consensus,
+        opus: { ...demoCase.consensus.opus, model: "claude-opus-4-7" },
+        sonnet: { ...demoCase.consensus.sonnet, model: "claude-sonnet-4-6" },
+      },
+      models: ["claude-opus-4-7", "claude-sonnet-4-6"],
+      latencyMs: 12,
+    });
   }
 
   const apiKey = process.env.ANTHROPIC_API_KEY;

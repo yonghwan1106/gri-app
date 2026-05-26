@@ -159,6 +159,21 @@ export default function DataCatalogPage() {
                 {/* Left: title + meta */}
                 <div>
                   <div className="flex flex-wrap items-center gap-2 mb-2">
+                    {(d.provider === "data.gg.go.kr" || d.provider === "insight.gg.go.kr") && (
+                      <span
+                        className="px-2 py-0.5 text-[10px] font-black rounded-sm inline-flex items-center gap-1"
+                        style={{
+                          backgroundColor: "#C4873B",
+                          color: "#0A1628",
+                          fontFamily: "JetBrains Mono, monospace",
+                          boxShadow: "0 1px 2px rgba(196,135,59,0.4)",
+                        }}
+                        title="가점 5점 직접 대상 (경기 공공데이터)"
+                      >
+                        <span style={{ fontSize: "12px", lineHeight: "1" }}>★</span>
+                        <span>가점 5점</span>
+                      </span>
+                    )}
                     <span
                       className="px-2 py-0.5 text-[9px] font-bold rounded-sm"
                       style={{

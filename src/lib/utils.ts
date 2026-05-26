@@ -6,14 +6,13 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export function formatDate(iso: string): string {
-  try {
-    const d = new Date(iso);
-    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(
-      d.getDate(),
-    ).padStart(2, "0")}`;
-  } catch {
-    return iso;
-  }
+  // v9.1: timezone-safe — Date 객체를 사용하지 않고 문자열에서 직접 추출
+  // 이전 구현은 new Date()로 인해 server(UTC) vs client(KST) 타임존 차이로
+  // hydration mismatch (React #418) 발생
+  if (!iso) return "";
+  const m = iso.match(/^(\d{4})-(\d{2})-(\d{2})/);
+  if (m) return `${m[1]}-${m[2]}-${m[3]}`;
+  return iso;
 }
 
 export function bsiColor(score: number): string {
