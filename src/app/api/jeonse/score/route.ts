@@ -39,8 +39,111 @@ interface RequestBody {
   address?: string;
   deposit?: number;
   monthlyRent?: number;
-  buildingType?: string; // 아파트/빌라/단독다가구/오피스텔
-  ownerName?: string; // 선택
+  buildingType?: string;
+  ownerName?: string;
+  /** ?single=true 시 Opus 단독 (베이스라인 측정용) */
+  single?: boolean;
+}
+
+interface AxisScores {
+  deposit_ratio: number;
+  owner_concentration: number;
+  building_age: number;
+  dispute_history: number;
+  cluster_pattern: number;
+}
+
+interface Assessment {
+  score: number;
+  level: string;
+  axisScores: AxisScores;
+  reasons: string[];
+  actions: string[];
+  callToAction: string;
+  summary: string;
+}
+
+async function callModel(
+  client: Anthropic,
+  model: string,
+  userText: string,
+): Promise<{ result: Assessment | null; raw: string; modelUsed: string; usage: unknown }> {
+  const response = await client.messages.create({
+    model,
+    max_tokens: 1500,
+    system: SYSTEM,
+    messages: [{ role: "user", content: userText }],
+  });
+  const text = response.content.map((b) => (b.type === "text" ? b.text : "")).join("").trim();
+  const m = text.match(/\{[\s\S]*\}/);
+  if (!m) return { result: null, raw: text, modelUsed: response.model, usage: response.usage };
+  try {
+    return { result: JSON.parse(m[0]) as Assessment, raw: m[0], modelUsed: response.model, usage: response.usage };
+  } catch {
+    return { result: null, raw: m[0], modelUsed: response.model, usage: response.usage };
+  }
+}
+
+function deriveLevel(score: number): string {
+  if (score >= 75) return "심각";
+  if (score >= 50) return "주의";
+  if (score >= 30) return "관찰";
+  return "안전";
+}
+
+function mergeAxis(a: AxisScores, b: AxisScores, conservative: boolean): AxisScores {
+  // 시민 안전 시스템 → 더 보수적(높은) 쪽 채택
+  const m = (x: number, y: number) => conservative ? Math.max(x, y) : Math.round((x + y) / 2);
+  return {
+    deposit_ratio: m(a.deposit_ratio, b.deposit_ratio),
+    owner_concentration: m(a.owner_concentration, b.owner_concentration),
+    building_age: m(a.building_age, b.building_age),
+    dispute_history: m(a.dispute_history, b.dispute_history),
+    cluster_pattern: m(a.cluster_pattern, b.cluster_pattern),
+  };
+}
+
+function mergeAssessment(opus: Assessment, sonnet: Assessment): {
+  merged: Assessment;
+  agreement: { levelMatch: boolean; scoreDelta: number; conservativeMode: boolean };
+} {
+  const scoreDelta = Math.abs(opus.score - sonnet.score);
+  // 시민 안전: 두 모델 차이가 10점 이상이면 보수 채택 (더 위험한 쪽), 그 미만은 평균
+  const conservativeMode = scoreDelta >= 10;
+  const finalScore = conservativeMode ? Math.max(opus.score, sonnet.score) : Math.round((opus.score + sonnet.score) / 2);
+  const finalAxis = mergeAxis(opus.axisScores, sonnet.axisScores, conservativeMode);
+  const finalLevel = deriveLevel(finalScore);
+  const levelMatch = opus.level === sonnet.level;
+
+  // reasons: Opus 우선, 부족하면 Sonnet 보충 (최대 5개)
+  const reasonsSet = new Set<string>();
+  for (const r of opus.reasons) if (reasonsSet.size < 5) reasonsSet.add(r);
+  for (const r of sonnet.reasons) if (reasonsSet.size < 5) reasonsSet.add(r);
+  const reasons = Array.from(reasonsSet).slice(0, 5);
+
+  // actions: 합집합 (중복 제거)
+  const actionsSet = new Set<string>([...opus.actions, ...sonnet.actions]);
+  const actions = Array.from(actionsSet).slice(0, 3);
+
+  // callToAction: 더 강한 메시지 (Opus 우선, 심각도 기준)
+  const callToAction = finalLevel === "심각" || finalLevel === "주의" ? opus.callToAction : opus.callToAction;
+
+  const consensusNote = conservativeMode
+    ? ` [Multi-Agent 보수 모드: Opus ${opus.score} vs Sonnet ${sonnet.score}, 차이 ${scoreDelta}점 → 시민 안전 우선 보수 채택]`
+    : ` [Multi-Agent 평균: Opus ${opus.score} + Sonnet ${sonnet.score}, 차이 ${scoreDelta}점]`;
+
+  return {
+    merged: {
+      score: finalScore,
+      level: finalLevel,
+      axisScores: finalAxis,
+      reasons,
+      actions,
+      callToAction,
+      summary: opus.summary + consensusNote,
+    },
+    agreement: { levelMatch, scoreDelta, conservativeMode },
+  };
 }
 
 export async function POST(req: Request) {
@@ -51,18 +154,14 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Invalid JSON body" }, { status: 400 });
   }
 
-  const { address, deposit, monthlyRent, buildingType, ownerName } = payload ?? {};
+  const { address, deposit, monthlyRent, buildingType, ownerName, single } = payload ?? {};
 
   if (!address || !deposit) {
-    return NextResponse.json(
-      { error: "address와 deposit 필드는 필수입니다." },
-      { status: 400 },
-    );
+    return NextResponse.json({ error: "address와 deposit 필드는 필수입니다." }, { status: 400 });
   }
 
   const apiKey = process.env.ANTHROPIC_API_KEY;
 
-  // API 키 없을 때 mock 응답 (데모 안정성)
   if (!apiKey) {
     return NextResponse.json({
       mock: true,
@@ -100,58 +199,78 @@ export async function POST(req: Request) {
     monthlyRent ? `[월세]: ${monthlyRent.toLocaleString()}원` : null,
     buildingType ? `[건물 유형]: ${buildingType}` : null,
     ownerName ? `[임대인]: ${ownerName}` : null,
-  ]
-    .filter(Boolean)
-    .join("\n");
+  ].filter(Boolean).join("\n");
 
   try {
     const client = new Anthropic({ apiKey });
-    const model = process.env.CLAUDE_MODEL ?? "claude-opus-4-7";
-    const response = await client.messages.create({
-      model,
-      max_tokens: 1500,
-      system: SYSTEM,
-      messages: [{ role: "user", content: userText }],
-    });
+    const opusModel = process.env.CLAUDE_MODEL ?? "claude-opus-4-7";
+    const sonnetModel = process.env.CLAUDE_SONNET_MODEL ?? "claude-sonnet-4-6";
 
-    const text = response.content
-      .map((block) => (block.type === "text" ? block.text : ""))
-      .join("")
-      .trim();
+    // ?single=true: 베이스라인 측정용
+    if (single) {
+      const t0 = Date.now();
+      const r = await callModel(client, opusModel, userText);
+      if (!r.result) {
+        return NextResponse.json({ error: "Claude 응답 파싱 실패", raw: r.raw }, { status: 502 });
+      }
+      return NextResponse.json({
+        mock: false,
+        mode: "single",
+        assessment: r.result,
+        model: r.modelUsed,
+        latencyMs: Date.now() - t0,
+      });
+    }
 
-    const jsonMatch = text.match(/\{[\s\S]*\}/);
-    if (!jsonMatch) {
+    // 기본: Multi-Agent 5축 합의 (Opus + Sonnet 병렬)
+    const t0 = Date.now();
+    const [opus, sonnet] = await Promise.all([
+      callModel(client, opusModel, userText),
+      callModel(client, sonnetModel, userText),
+    ]);
+    const latencyMs = Date.now() - t0;
+
+    if (!opus.result && !sonnet.result) {
       return NextResponse.json(
-        { error: "Claude 응답에서 JSON을 찾을 수 없습니다.", raw: text },
+        { error: "Multi-Agent 두 모델 모두 파싱 실패", opusRaw: opus.raw, sonnetRaw: sonnet.raw },
         { status: 502 },
       );
     }
-
-    let parsed: unknown;
-    try {
-      parsed = JSON.parse(jsonMatch[0]);
-    } catch (e) {
-      return NextResponse.json(
-        {
-          error: "Claude 응답 JSON 파싱 실패",
-          raw: jsonMatch[0],
-          detail: String(e),
-        },
-        { status: 502 },
-      );
+    if (!opus.result) {
+      return NextResponse.json({
+        mock: false,
+        mode: "fallback-sonnet",
+        assessment: sonnet.result,
+        model: sonnet.modelUsed,
+        latencyMs,
+      });
     }
+    if (!sonnet.result) {
+      return NextResponse.json({
+        mock: false,
+        mode: "fallback-opus",
+        assessment: opus.result,
+        model: opus.modelUsed,
+        latencyMs,
+      });
+    }
+
+    const { merged, agreement } = mergeAssessment(opus.result, sonnet.result);
 
     return NextResponse.json({
       mock: false,
-      assessment: parsed,
-      model: response.model,
-      usage: response.usage,
+      mode: "multi-agent",
+      assessment: merged,
+      consensus: {
+        ...agreement,
+        opus: { score: opus.result.score, level: opus.result.level, axisScores: opus.result.axisScores, model: opus.modelUsed },
+        sonnet: { score: sonnet.result.score, level: sonnet.result.level, axisScores: sonnet.result.axisScores, model: sonnet.modelUsed },
+      },
+      models: [opus.modelUsed, sonnet.modelUsed],
+      latencyMs,
     });
   } catch (e) {
     const msg = e instanceof Error ? e.message : String(e);
-    return NextResponse.json(
-      { error: "Claude API 호출 실패", detail: msg },
-      { status: 500 },
-    );
+    return NextResponse.json({ error: "Claude API 호출 실패", detail: msg }, { status: 500 });
   }
 }
