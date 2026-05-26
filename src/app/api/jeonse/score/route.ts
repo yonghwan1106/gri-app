@@ -106,7 +106,7 @@ export async function POST(req: Request) {
 
   try {
     const client = new Anthropic({ apiKey });
-    const model = process.env.CLAUDE_MODEL ?? "claude-opus-4-5";
+    const model = process.env.CLAUDE_MODEL ?? "claude-opus-4-7";
     const response = await client.messages.create({
       model,
       max_tokens: 1500,

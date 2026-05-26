@@ -99,43 +99,50 @@ const BM_BLOCKS: { title: string; tone: "key" | "support"; items: string[] }[] =
   },
 ];
 
-const REVENUE: {
-  year: string;
-  date: string;
-  customers: string;
-  saas: number;
-  consulting: number;
-  b2b: number;
-  total: number;
-  highlight?: boolean;
+// v9: 3안 시나리오 (보수/기본/도전) — v8 PDF 정합
+const SCENARIOS: {
+  key: "conservative" | "base" | "aggressive";
+  label: string;
+  share: string; // SAM 점유율
+  precondition: string;
+  rows: { year: string; date: string; customers: string; total: number }[];
+  cumulative: number;
 }[] = [
   {
-    year: "Y1",
-    date: "2026 (대회 직후~연말)",
-    customers: "파일럿 시 1곳 (화성 또는 부천)",
-    saas: 1500,
-    consulting: 1000,
-    b2b: 0,
-    total: 2500,
+    key: "conservative",
+    label: "① 보수",
+    share: "SAM 12%",
+    precondition: "파일럿 1곳 착수금만 + Y2 시·군 2곳 + Y3 5곳 (B2G 조달 사이클 9개월 가정)",
+    rows: [
+      { year: "Y1", date: "2026", customers: "파일럿 착수금 1곳", total: 800 },
+      { year: "Y2", date: "2027", customers: "시·군 2곳", total: 4000 },
+      { year: "Y3", date: "2028", customers: "시·군 5곳", total: 10000 },
+    ],
+    cumulative: 14800,
   },
   {
-    year: "Y2",
-    date: "2027",
-    customers: "시·군 5곳 + 도청 PoC",
-    saas: 10000,
-    consulting: 3000,
-    b2b: 600,
-    total: 13600,
+    key: "base",
+    label: "② 기본 (자가평가 기준)",
+    share: "SAM 25%",
+    precondition: "파일럿 1곳 + Y2 시·군 3곳 + B2B 위젯 2사 + Y3 시·군 10곳",
+    rows: [
+      { year: "Y1", date: "2026", customers: "파일럿 1곳", total: 1500 },
+      { year: "Y2", date: "2027", customers: "시·군 3곳 + B2B 2사", total: 8000 },
+      { year: "Y3", date: "2028", customers: "시·군 10곳 + 도청 PoC", total: 21000 },
+    ],
+    cumulative: 30500,
   },
   {
-    year: "Y3",
-    date: "2028",
-    customers: "시·군 15곳 + 도청 통합 + 언론사 5곳",
-    saas: 30000,
-    consulting: 8000,
-    b2b: 3000,
-    total: 41000,
-    highlight: true,
+    key: "aggressive",
+    label: "③ 도전",
+    share: "SAM 50%",
+    precondition: "GBSA 후속지원 + 도청 PoC MOU + B2B 위젯 5사 + Y3 시·군 15곳 + 도청 통합 라이선스",
+    rows: [
+      { year: "Y1", date: "2026", customers: "파일럿 1곳 + PoC", total: 2500 },
+      { year: "Y2", date: "2027", customers: "시·군 5곳 + 도청 PoC + B2B 2사", total: 13600 },
+      { year: "Y3", date: "2028", customers: "시·군 15곳 + 도청 통합 + B2B 5사", total: 41000 },
+    ],
+    cumulative: 57100,
   },
 ];
 
@@ -294,7 +301,7 @@ export default function BizPage() {
           <table className="w-full text-sm">
             <thead>
               <tr style={{ backgroundColor: "#0A1628" }}>
-                {["연차", "고객", "B2G SaaS", "컨설팅", "B2B 위젯", "합계"].map((h) => (
+                {["시나리오", "SAM 점유", "Y1 (2026)", "Y2 (2027)", "Y3 (2028)", "3년 누적", "전제 조건"].map((h) => (
                   <th
                     key={h}
                     className="py-3 px-3 text-[10px] uppercase tracking-widest text-gold-leaf text-left"
@@ -306,79 +313,41 @@ export default function BizPage() {
               </tr>
             </thead>
             <tbody>
-              {REVENUE.map((r) => (
-                <tr
-                  key={r.year}
-                  className="border-t"
-                  style={{
-                    borderColor: "rgba(196,135,59,0.15)",
-                    backgroundColor: r.highlight ? "#FFFBEB" : "#FBF7F0",
-                  }}
-                >
-                  <td className="py-3 px-3">
-                    <div
-                      className="text-base font-black text-ink"
-                      style={{ fontFamily: "Fraunces, Georgia, serif" }}
-                    >
-                      {r.year}
-                    </div>
-                    <div
-                      className="text-[10px] text-ink/50"
-                      style={{ fontFamily: "JetBrains Mono, monospace" }}
-                    >
-                      {r.date}
-                    </div>
-                  </td>
-                  <td className="py-3 px-3 text-ink/70" style={{ wordBreak: "keep-all" }}>{r.customers}</td>
-                  <td className="py-3 px-3 text-right text-ink/80" style={{ fontFamily: "JetBrains Mono, monospace" }}>
-                    {r.saas.toLocaleString()}
-                  </td>
-                  <td className="py-3 px-3 text-right text-ink/80" style={{ fontFamily: "JetBrains Mono, monospace" }}>
-                    {r.consulting.toLocaleString()}
-                  </td>
-                  <td className="py-3 px-3 text-right text-ink/80" style={{ fontFamily: "JetBrains Mono, monospace" }}>
-                    {r.b2b.toLocaleString()}
-                  </td>
-                  <td className="py-3 px-3 text-right">
-                    <span
-                      className="font-black text-ink"
-                      style={{ fontFamily: "Fraunces, Georgia, serif", fontSize: r.highlight ? "1.1rem" : "1rem" }}
-                    >
-                      {r.total.toLocaleString()}
-                    </span>
-                  </td>
-                </tr>
-              ))}
-              <tr className="border-t-2" style={{ borderColor: "#C4873B", backgroundColor: "#F4ECE0" }}>
-                <td className="py-3 px-3 font-bold text-ink" style={{ fontFamily: "JetBrains Mono, monospace" }} colSpan={2}>
-                  3년 누적 매출
-                </td>
-                <td className="py-3 px-3 text-right text-ink/80" style={{ fontFamily: "JetBrains Mono, monospace" }}>
-                  {REVENUE.reduce((s, r) => s + r.saas, 0).toLocaleString()}
-                </td>
-                <td className="py-3 px-3 text-right text-ink/80" style={{ fontFamily: "JetBrains Mono, monospace" }}>
-                  {REVENUE.reduce((s, r) => s + r.consulting, 0).toLocaleString()}
-                </td>
-                <td className="py-3 px-3 text-right text-ink/80" style={{ fontFamily: "JetBrains Mono, monospace" }}>
-                  {REVENUE.reduce((s, r) => s + r.b2b, 0).toLocaleString()}
-                </td>
-                <td className="py-3 px-3 text-right">
-                  <span
-                    className="font-black text-ink"
-                    style={{ fontFamily: "Fraunces, Georgia, serif", fontSize: "1.2rem" }}
-                  >
-                    {REVENUE.reduce((s, r) => s + r.total, 0).toLocaleString()}
-                  </span>
-                  <span className="ml-1 text-xs text-ink/45">만원</span>
-                </td>
-              </tr>
+              {SCENARIOS.map((s) => {
+                const bg = s.key === "base" ? "#FFFBEB" : s.key === "aggressive" ? "#F4ECE0" : "#FBF7F0";
+                const accent = s.key === "base" ? "#C4873B" : s.key === "aggressive" ? "#166534" : "#6b7280";
+                return (
+                  <tr key={s.key} className="border-t" style={{ borderColor: "rgba(196,135,59,0.15)", backgroundColor: bg }}>
+                    <td className="py-3 px-3">
+                      <div className="font-black text-ink" style={{ fontFamily: "Fraunces, Georgia, serif", fontSize: "1rem", color: accent }}>
+                        {s.label}
+                      </div>
+                    </td>
+                    <td className="py-3 px-3 text-ink/80" style={{ fontFamily: "JetBrains Mono, monospace" }}>{s.share}</td>
+                    {s.rows.map((r) => (
+                      <td key={r.year} className="py-3 px-3 text-right text-ink/80" style={{ fontFamily: "JetBrains Mono, monospace" }}>
+                        {r.total.toLocaleString()}
+                      </td>
+                    ))}
+                    <td className="py-3 px-3 text-right">
+                      <span className="font-black text-ink" style={{ fontFamily: "Fraunces, Georgia, serif", fontSize: s.key === "base" ? "1.15rem" : "1rem" }}>
+                        {s.cumulative.toLocaleString()}
+                      </span>
+                      <span className="ml-1 text-[10px] text-ink/45">만원</span>
+                    </td>
+                    <td className="py-3 px-3 text-xs text-ink/65" style={{ wordBreak: "keep-all", lineHeight: "1.5" }}>
+                      {s.precondition}
+                    </td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         </div>
 
         <p className="mt-3 text-xs text-ink/50 leading-[1.7]" style={{ wordBreak: "keep-all" }}>
-          * 가정: 시·군 평균 라이선스 2,000만원/년(Y1 1,500), 컨설팅 평균 1,000만원/건, B2B 위젯 월 50만원/사 × 12개월.
-          본 시뮬은 SAM 8억의 50% 점유(Y3) 시나리오이며, GBSA 후속지원·통합본선 진출 시 1.5배 가속 가능.
+          * 자가평가 점수는 <strong style={{ color: "#C4873B" }}>② 기본 시나리오 (3.05억 누적)</strong> 기준 산출. 평가위원 검증 가능하도록 보수·기본·도전 3안 병행 공개.
+          가정: 시·군 평균 라이선스 2,000만원/년, 컨설팅 평균 1,000만원/건, B2B 위젯 월 50만원/사. GBSA 후속지원·도청 PoC MOU 시 도전 시나리오 가능.
         </p>
       </section>
 
@@ -482,6 +451,7 @@ export default function BizPage() {
             { tag: "M2", title: "2026.10 — 첫 유료 라이선스 (1,500만원/연)", desc: "파일럿 시 1곳 SaaS 1년 계약 + 분기 정책 보고서 자동 발행" },
             { tag: "M3", title: "2026.12 — 골든셋 100건 확장 + 멀티에이전트 출시", desc: "Opus 4.7 + Sonnet 4.6 합의 → 정확도 95%+ · 가점 5점 후속 검증" },
             { tag: "M4", title: "2027.03 — 시·군 5곳 확장 + 도청 PoC", desc: "Y2 매출 1.36억 목표 — 도청 통합 라이선스 1차 미팅" },
+            { tag: "M5", title: "2027.09 — Series A Bridge 5억 유치 (단계화)", desc: "Y2 종료 시점 BEP 가시화 후 Bridge 라운드. 경기 IBK·신용보증재단 + GBSA 후속지원 연계. Y3 Series A 15억으로 단계 확장" },
           ].map(({ tag, title, desc }) => (
             <div
               key={tag}

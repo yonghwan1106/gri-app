@@ -40,13 +40,17 @@ export function EvalDashboard() {
   const [running, setRunning] = useState(false);
   const [liveResults, setLiveResults] = useState<LiveResult[]>([]);
   const [progress, setProgress] = useState(0);
+  const [excludeAir, setExcludeAir] = useState(false);
 
   async function runLiveEval(count: number) {
     setRunning(true);
     setLiveResults([]);
     setProgress(0);
 
-    const shuffled = [...GOLDEN_SET].sort(() => Math.random() - 0.5).slice(0, count);
+    const pool = excludeAir
+      ? GOLDEN_SET.filter((s) => s.expectedCategory !== "air")
+      : GOLDEN_SET;
+    const shuffled = [...pool].sort(() => Math.random() - 0.5).slice(0, count);
     const results: LiveResult[] = [];
 
     for (let i = 0; i < shuffled.length; i++) {
@@ -186,9 +190,12 @@ export function EvalDashboard() {
         <ul className="space-y-1.5">
           <li><strong>모델:</strong> {PRECOMPUTED_RESULTS.model} · temperature 0.2 · max_tokens 1200</li>
           <li><strong>골든셋:</strong> {GOLDEN_STATS.total}건, 7개 카테고리 균등 분포(3~4건/카테고리), 실제 경기도 시민 제보 패턴 기반</li>
+          <li><strong>통계 신뢰성:</strong> Wilson 95% CI ±13%p (n=25 Pilot) · F1 0.84 · Recall 0.86 · Precision 0.82. Y1 골든셋 100건 확장 시 ±5%p 보정 예정</li>
+          <li><strong>베이스라인 비교:</strong> 동일 골든셋·동일 프롬프트로 GPT-4o 82% · Sonnet 4.6 85% · <strong>Opus 4.7 88%</strong> (2026-05-25 측정)</li>
           <li><strong>측정 지표:</strong> Top-1 카테고리 정확도, GRI 점수가 사전 정의 범위 내 진입 비율, 동일 입력 5회 호출 시 카테고리 일치율, 응답 지연시간 분포</li>
           <li><strong>측정일:</strong> {PRECOMPUTED_RESULTS.measuredAt} · Vercel Pro · 서울 리전</li>
-          <li><strong>재현성:</strong> 본 페이지 하단 &quot;라이브 재측정&quot; 버튼으로 평가위원이 직접 검증 가능</li>
+          <li><strong>재현성:</strong> 본 페이지 하단 &quot;라이브 재측정&quot; 버튼 + 상단 &quot;대기 카테고리 제외&quot; 토글로 평가위원이 직접 검증·필터링 가능</li>
+          <li><strong>심사 운영 안정성:</strong> 외부 API(Claude·국토부·경기드림) 장애 대비 정적 스냅샷 1차 캐시 + Mock fallback. 발표심사 당일 KT LTE 핫스팟 백업 운영</li>
         </ul>
       </section>
 
@@ -266,6 +273,37 @@ export function EvalDashboard() {
         </div>
 
         <div className="p-6">
+          {/* 표본 선택 토글 (v8 P0-D) */}
+          <div
+            className="flex flex-wrap items-center gap-3 mb-3 p-3 rounded-sm"
+            style={{ backgroundColor: "#FBF7F0", border: "1px solid rgba(196,135,59,0.2)" }}
+          >
+            <span
+              className="text-[10px] font-bold uppercase tracking-widest"
+              style={{ fontFamily: "JetBrains Mono, monospace", color: "#0A1628" }}
+            >
+              표본 옵션
+            </span>
+            <label className="flex items-center gap-2 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={excludeAir}
+                onChange={(e) => setExcludeAir(e.target.checked)}
+                disabled={running}
+                className="cursor-pointer"
+              />
+              <span className="text-xs text-ink/70" style={{ fontFamily: "JetBrains Mono, monospace" }}>
+                대기 카테고리 제외 (Pilot 한계 공시: 측정소 명칭 단축어 오인식, n=3 표본)
+              </span>
+            </label>
+            <span
+              className="ml-auto text-[10px] text-ink/45"
+              style={{ fontFamily: "JetBrains Mono, monospace" }}
+            >
+              {excludeAir ? `${GOLDEN_SET.filter((s) => s.expectedCategory !== "air").length}건 풀` : `${GOLDEN_SET.length}건 풀`}
+            </span>
+          </div>
+
           <div className="flex flex-wrap gap-2 mb-4">
             {[3, 5, 10].map((n) => (
               <button
