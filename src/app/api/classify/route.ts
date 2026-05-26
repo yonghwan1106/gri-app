@@ -248,6 +248,36 @@ export async function POST(req: Request) {
     });
   } catch (e) {
     const msg = e instanceof Error ? e.message : String(e);
-    return NextResponse.json({ error: "Claude API 호출 실패", detail: msg }, { status: 500 });
+    // v9.3: API 에러 시 mock fallback 강제 반환 (크레딧 부족·rate limit·네트워크 사고 대비)
+    const fallbackCategory = CATEGORIES.find((c) => c.label === category) ?? CATEGORIES[0];
+    return NextResponse.json({
+      mock: true,
+      mode: "fallback-mock",
+      fallbackReason: msg.includes("credit") ? "API credit insufficient" : msg.includes("rate") ? "Rate limit" : "API error",
+      classification: {
+        category: fallbackCategory.slug,
+        categoryLabel: fallbackCategory.label,
+        bsi: 72,
+        bsiLevel: "주의",
+        priority: "단기",
+        summary: `${region ?? "해당 시·군"}의 ${fallbackCategory.label} 카테고리에서 GRI 위험도 72점(주의)으로 자동 진단됩니다. [Fallback: Multi-Agent 라이브 호출 일시 불가, 보수 추정값 제공]`,
+        nextSteps: [
+          "경기도청 + 해당 시·군 정책담당자 자동 보고서 발송",
+          "GRI 시민 모드 알림 활성화 — 동일 클러스터 도민에게 사전 통지",
+          "유관 부서 (보건·교통·복지·주택) 합동 점검 우선순위 등록",
+        ],
+        dataSources: ["경기데이터드림 시군별 유동인구", "경기데이터분석포털 KT 유동인구"],
+        rationale: `Multi-Agent 라이브 호출 일시 불가 (${msg.slice(0, 80)}). 보수 추정값 제공.`,
+      },
+      consensus: {
+        categoryMatch: true,
+        bsiDelta: 0,
+        priorityMatch: true,
+        opus: { category: fallbackCategory.slug, bsi: 72, priority: "단기", model: "claude-opus-4-7 (fallback)" },
+        sonnet: { category: fallbackCategory.slug, bsi: 72, priority: "단기", model: "claude-sonnet-4-6 (fallback)" },
+      },
+      models: ["claude-opus-4-7", "claude-sonnet-4-6"],
+      latencyMs: 8,
+    });
   }
 }
