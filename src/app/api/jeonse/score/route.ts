@@ -227,7 +227,8 @@ export async function POST(req: Request) {
 
   try {
     const client = new Anthropic({ apiKey });
-    const opusModel = process.env.CLAUDE_MODEL ?? "claude-opus-4-7";
+    // v9.4 비용 절감: 기본 모델 Opus → Sonnet (1회당 비용 1/5)
+    const opusModel = process.env.CLAUDE_MODEL ?? "claude-sonnet-4-6";
     const sonnetModel = process.env.CLAUDE_SONNET_MODEL ?? "claude-sonnet-4-6";
 
     // ?single=true: 베이스라인 측정용
