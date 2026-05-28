@@ -86,8 +86,8 @@ export default function HomePage() {
                 style={{ animationDelay: '0.35s', animationFillMode: 'both', wordBreak: 'keep-all' }}
               >
                 GRI는 <strong className="text-paper font-semibold">경기 공공데이터 × Claude Opus 4.7 × Multi-Agent</strong>를 결합한
-                듀얼 모드 플랫폼입니다. 31개 시·군의 7대 정책 위험도를 AI가 자동 진단하고
-                (B2G 정책담당자), 도민에게는 전세사기 위험도를 5초 안에 알려줍니다 (B2C 시민 보호).
+                정책 위험도 지수 플랫폼입니다. 31개 시·군 × 7대 카테고리를 AI가 자동 진단하는
+                GRI 본체(B2G)이며, 주거 카테고리 한 칸을 도민에게 전세사기 위험도로 5초 만에 미리 공개하는 주거 윈도우(B2C 인지도)를 함께 운영합니다.
               </p>
 
               {/* CTA buttons */}
@@ -257,8 +257,8 @@ export default function HomePage() {
           />
           <Pillar
             num="03"
-            title="B2G + B2C 듀얼 모드"
-            body="도청·시군 정책담당자에게는 위험 진단 + 자동 보고서를, 도민에게는 전세사기 즉시 조회를 제공하는 동시 채널 플랫폼."
+            title="GRI 본체 + 주거 윈도우"
+            body="도청·시군(B2G 본체)에는 위험 진단 + 자동 보고서를, 도민에게는 주거 윈도우(전세사기 즉시 조회)로 인지도를 확보하는 본체-종속 구조."
             accent="#3498DB"
           />
         </div>

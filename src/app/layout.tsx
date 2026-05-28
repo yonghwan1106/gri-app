@@ -3,16 +3,16 @@ import Link from "next/link";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "GRI — 경기도 정책 위험도 진단 AI + 시민 전세사기 보호",
+  title: "GRI — 경기 7대 카테고리 정책 위험도 지수 (주거 윈도우 시민 공개)",
   description:
-    "경기도 31개 시·군의 7대 정책 위험도를 AI가 자동 진단하고, 도민에게는 전세사기 위험도를 5초 안에 알려주는 듀얼 모드 AI 플랫폼. 경기데이터드림 + 경기데이터분석포털 직접 활용.",
+    "경기도 31개 시·군 × 7대 카테고리 정책 위험도 지수를 AI가 자동 진단하는 B2G 본체이며, 주거 카테고리를 도민에게 전세사기 위험도로 미리 공개하는 주거 윈도우를 함께 운영하는 정책 위험도 지수 플랫폼. 경기데이터드림 + 경기데이터분석포털 직접 활용.",
   applicationName: "GRI · Gyeonggi Risk Index",
   manifest: "/manifest.json",
   keywords: ["GRI", "경기도", "공공데이터", "AI", "전세사기", "정책 위험도", "Claude Opus", "경기데이터드림"],
   authors: [{ name: "박용환 (크리에이티브 넥서스)" }],
   openGraph: {
-    title: "GRI — 경기도 31개 시·군 정책 위험도 진단 AI",
-    description: "도청·시군 공무원에게는 정책 위험 진단, 도민에게는 전세사기 즉시 차단을 제공하는 듀얼 AI 플랫폼.",
+    title: "GRI — 경기 31개 시·군 7대 카테고리 정책 위험도 지수",
+    description: "도청·시군 공무원에게는 정책 위험 진단(B2G 본체), 도민에게는 전세사기 즉시 차단을 주거 윈도우로 제공하는 정책 위험도 지수 플랫폼.",
     type: "website",
   },
 };
@@ -44,7 +44,7 @@ function SiteHeader() {
       {/* Masthead top rule */}
       <div className="border-b border-gold-leaf/20 py-0.5 px-4 hidden sm:block">
         <div className="mx-auto max-w-7xl flex items-center justify-between">
-          <span className="section-tag">GRI · Gyeonggi Risk Index · 경기 공공데이터·AI 듀얼 플랫폼</span>
+          <span className="section-tag">GRI · Gyeonggi Risk Index · 경기 공공데이터·AI 정책 위험도 지수</span>
           <span className="page-folio">Vol. 01 · 2026.05 · 박용환 단독</span>
         </div>
       </div>

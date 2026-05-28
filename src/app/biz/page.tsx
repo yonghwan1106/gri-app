@@ -430,7 +430,7 @@ export default function BizPage() {
           </div>
           <ul className="space-y-1.5 text-sm text-ink/75 leading-[1.8]" style={{ wordBreak: "keep-all" }}>
             <li><strong>① AI 자동 분류 + 정량 GRI 지수:</strong> 시민 제보·공공데이터를 결합해 0~95 정량 점수로 환산 (경쟁사 부재).</li>
-            <li><strong>② 듀얼 모드 (B2G + B2C):</strong> 도청·시·군 정책담당자와 도민이 동일한 데이터를 다른 UX로 사용 (경쟁사 단일 채널).</li>
+            <li><strong>② GRI 본체 + 주거 윈도우 위계:</strong> 도청·시·군(B2G 본체)과 도민(주거 윈도우·인지도 채널)이 동일 데이터를 다른 UX로 사용 (경쟁사 단일 채널).</li>
             <li><strong>③ 외부 검증 가능성:</strong> /data 카탈로그·/eval 정확도 라이브 측정 페이지 공개 (경쟁사 블랙박스).</li>
           </ul>
         </div>
