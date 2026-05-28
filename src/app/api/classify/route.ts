@@ -153,7 +153,7 @@ export async function POST(req: Request) {
         summary: `${region ?? "해당 시·군"}의 ${fallbackCategory.label} 카테고리에서 GRI 위험도 72점(주의)으로 자동 진단됩니다. (Mock 응답: ANTHROPIC_API_KEY 미설정)`,
         nextSteps: [
           "경기도청 + 해당 시·군 정책담당자 자동 보고서 발송",
-          "GRI 시민 모드 알림 활성화 — 동일 클러스터 도민에게 사전 통지",
+          "GRI 주거 윈도우 알림 활성화 — 동일 클러스터 도민에게 사전 통지",
           "유관 부서 (보건·교통·복지·주택) 합동 점검 우선순위 등록",
         ],
         dataSources: ["경기데이터드림 시군별 유동인구", "경기데이터분석포털 KT 유동인구"],
@@ -265,7 +265,7 @@ export async function POST(req: Request) {
         summary: `${region ?? "해당 시·군"}의 ${fallbackCategory.label} 카테고리에서 GRI 위험도 72점(주의)으로 자동 진단됩니다. [Fallback: Multi-Agent 라이브 호출 일시 불가, 보수 추정값 제공]`,
         nextSteps: [
           "경기도청 + 해당 시·군 정책담당자 자동 보고서 발송",
-          "GRI 시민 모드 알림 활성화 — 동일 클러스터 도민에게 사전 통지",
+          "GRI 주거 윈도우 알림 활성화 — 동일 클러스터 도민에게 사전 통지",
           "유관 부서 (보건·교통·복지·주택) 합동 점검 우선순위 등록",
         ],
         dataSources: ["경기데이터드림 시군별 유동인구", "경기데이터분석포털 KT 유동인구"],

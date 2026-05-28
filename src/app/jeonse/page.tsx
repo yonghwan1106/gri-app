@@ -1,7 +1,7 @@
 import { JeonseForm } from "./JeonseForm";
 
 export const metadata = {
-  title: "전세사기 즉시 조회 · GRI 시민 모드",
+  title: "전세사기 즉시 조회 · GRI 주거 윈도우",
   description: "임대 매물 주소·보증금만 입력하면 GRI AI가 5초 안에 전세사기 위험도(0~100점)와 5가지 근거를 제시합니다.",
 };
 
@@ -17,7 +17,7 @@ export default function JeonsePage() {
               className="text-[10px] tracking-[0.18em] uppercase text-gold-leaf font-bold"
               style={{ fontFamily: 'JetBrains Mono, monospace' }}
             >
-              GRI 시민 모드 · F1 전세사기
+              GRI 주거 윈도우 · F1 전세사기
             </span>
           </div>
           <h1

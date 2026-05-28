@@ -74,7 +74,7 @@ export const CATEGORIES: Category[] = [
     slug: "housing",
     label: "주거 안전",
     emoji: "🏠",
-    description: "전월세 시세·임대주택·전세사기 위험 매물 통합 진단 (F1 시민 모드 포함)",
+    description: "전월세 시세·임대주택·전세사기 위험 매물 통합 진단 (F1 주거 윈도우 포함)",
     color: "#3498DB",
     hasDetailPage: true,
     examples: [

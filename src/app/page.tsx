@@ -144,7 +144,7 @@ export default function HomePage() {
             </h2>
             <p className="mt-2 text-sm text-ink/55 max-w-xl" style={{ wordBreak: 'keep-all' }}>
               의료·교통·장애·대기·주거·안전·교육 — 경기 공공데이터 15종을 결합해 시·군별 GRI 점수를 산출합니다.
-              주거 안전 카테고리는 시민용 전세사기 조회 모드까지 통합 제공합니다.
+              주거 안전 카테고리는 주거 윈도우(시민 전세사기 조회)까지 통합 제공합니다.
             </p>
           </div>
           <div className="hidden sm:block text-right">
