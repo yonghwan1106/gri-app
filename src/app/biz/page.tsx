@@ -61,7 +61,7 @@ const BM_BLOCKS: { title: string; tone: "key" | "support"; items: string[] }[] =
     title: "핵심 자원",
     tone: "support",
     items: [
-      "Claude Opus 4.7 1M context API",
+      "Claude Opus 4.8 추론 API",
       "골든셋 25건 → 100건 확장 + 평가 파이프라인",
       "경기 31개 시·군 데이터 ETL 자동화 코드",
       "박용환 — 22개월 86건 공모 수상·정책 기획 경험",
@@ -240,9 +240,9 @@ export default function BizPage() {
         <Market
           label="SOM"
           subLabel="Serviceable Obtainable · Y3"
-          value="4.1억"
+          value="3.0억"
           unit="원/년"
-          body="15개 시·군 + 도청 통합 + B2B 위젯 — 본 자료 매출 시뮬과 일치"
+          body="15개 시·군 + 도청 통합 — 기본 시나리오(3년 누적 3.05억) 기준 보수 산정"
           accent="#166534"
         />
       </section>
@@ -449,9 +449,9 @@ export default function BizPage() {
             { tag: "M0", title: "2026.07 — 통합본선 진출 + GBSA 멘토링", desc: "본선 통과 시 컨설팅 + 1,500만원 시상금 → 운영비 확보" },
             { tag: "M1", title: "2026.08 — 화성/부천 시청 파일럿 MOU 추진", desc: "프렉탈 신청서·86건 수상 이력으로 시·군 정책담당자 초기 미팅 3건 확정" },
             { tag: "M2", title: "2026.10 — 첫 유료 라이선스 (1,500만원/연)", desc: "파일럿 시 1곳 SaaS 1년 계약 + 분기 정책 보고서 자동 발행" },
-            { tag: "M3", title: "2026.12 — 골든셋 100건 확장 + 멀티에이전트 출시", desc: "Opus 4.7 + Sonnet 4.6 합의 → 정확도 95%+ · 가점 5점 후속 검증" },
+            { tag: "M3", title: "2026.12 — 골든셋 100건 확장 + 멀티에이전트 출시", desc: "Opus 4.8 + Sonnet 4.6 합의 → 정확도 95%+ · 가점 5점 후속 검증" },
             { tag: "M4", title: "2027.03 — 시·군 5곳 확장 + 도청 PoC", desc: "Y2 매출 1.36억 목표 — 도청 통합 라이선스 1차 미팅" },
-            { tag: "M5", title: "2027.09 — Series A Bridge 5억 유치 (단계화)", desc: "Y2 종료 시점 BEP 가시화 후 Bridge 라운드. 경기 IBK·신용보증재단 + GBSA 후속지원 연계. Y3 Series A 15억으로 단계 확장" },
+            { tag: "M5", title: "2027.09 — 시·군 다지역 확산 + 단계적 투자 검토", desc: "Y2 종료 시점 BEP 가시화 후 실증 성과에 연동해 투자 유치 검토 (경기 IBK·신용보증재단·GBSA 후속지원 연계)" },
           ].map(({ tag, title, desc }) => (
             <div
               key={tag}

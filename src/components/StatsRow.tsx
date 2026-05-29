@@ -1,6 +1,6 @@
 import { SPOTS } from "@/data/mockSpots";
 import { REGIONS } from "@/data/mockRegions";
-import { DATA_SOURCES, GYEONGGI_SOURCES } from "@/data/sources";
+import { DATASET_STATS } from "@/data/datasets";
 
 export function StatsRow() {
   const total = SPOTS.length;
@@ -11,7 +11,7 @@ export function StatsRow() {
       <Stat label="GRI 진단 데이터" value={total} suffix="건" accent="#003876" />
       <Stat label="위험 시·군 (GRI 80+)" value={critical} suffix="건" accent="#B91C1C" />
       <Stat label="정책 진단 리포트" value={reports} suffix="건" accent="#C4873B" />
-      <Stat label="대상 (경기 31 + 가점 5종)" value={REGIONS.length} suffix="시·군" accent="#166534" sub={`경기 공공데이터 ${GYEONGGI_SOURCES.length}종 + 보조 ${DATA_SOURCES.length - GYEONGGI_SOURCES.length}종`} />
+      <Stat label="분석 대상 (경기 31개 시·군)" value={REGIONS.length} suffix="시·군" accent="#166534" sub={`경기 공공데이터 ${DATASET_STATS.gyeonggiDirect}종 + 보조 ${DATASET_STATS.total - DATASET_STATS.gyeonggiDirect}종`} />
     </div>
   );
 }

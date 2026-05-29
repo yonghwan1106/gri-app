@@ -5,7 +5,7 @@ import { CATEGORIES } from "@/data/categories";
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-const SYSTEM = `당신은 GRI(Gyeonggi Risk Index)의 정책 위험도 자동 평가 AI입니다. GRI는 경기 공공데이터(경기데이터드림 + 경기데이터분석포털) + Claude Opus 4.7을 결합한 정책 위험도 지수 플랫폼으로, 경기도 31개 시·군의 7대 정책 위험도를 자동 진단합니다.
+const SYSTEM = `당신은 GRI(Gyeonggi Risk Index)의 정책 위험도 자동 평가 AI입니다. GRI는 경기 공공데이터(경기데이터드림 + 경기데이터분석포털) + Claude Opus 4.8을 결합한 정책 위험도 지수 플랫폼으로, 경기도 31개 시·군의 7대 정책 위험도를 자동 진단합니다.
 
 당신의 역할:
 1. 입력된 정책 진단 요청을 7개 GRI 카테고리(medical/transit/disabled/air/housing/safety/edu) 중 가장 적합한 한 곳으로 분류
@@ -116,8 +116,8 @@ function mergeConsensus(
     nextSteps: opus.nextSteps,
     dataSources,
     rationale: categoryMatch
-      ? `${opus.rationale} [Multi-Agent 합의: Opus 4.7 + Sonnet 4.6 카테고리 일치, BSI 차이 ${bsiDelta}점]`
-      : `${opus.rationale} [Multi-Agent 분기: Opus=${opus.category}/${opus.bsi}, Sonnet=${sonnet.category}/${sonnet.bsi}. Opus 4.7 결정 채택]`,
+      ? `${opus.rationale} [Multi-Agent 합의: Opus 4.8 + Sonnet 4.6 카테고리 일치, BSI 차이 ${bsiDelta}점]`
+      : `${opus.rationale} [Multi-Agent 분기: Opus=${opus.category}/${opus.bsi}, Sonnet=${sonnet.category}/${sonnet.bsi}. Opus 4.8 결정 채택]`,
   };
 
   return { merged, agreement: { categoryMatch, bsiDelta, priorityMatch } };
@@ -157,7 +157,7 @@ export async function POST(req: Request) {
           "유관 부서 (보건·교통·복지·주택) 합동 점검 우선순위 등록",
         ],
         dataSources: ["경기데이터드림 시군별 유동인구", "경기데이터분석포털 KT 유동인구"],
-        rationale: "ANTHROPIC_API_KEY 환경변수가 설정되지 않아 mock 응답을 반환합니다. Vercel 대시보드에서 환경변수를 설정하면 Claude Opus 4.7 + Sonnet 4.6 Multi-Agent 실시간 분석이 활성화됩니다.",
+        rationale: "ANTHROPIC_API_KEY 환경변수가 설정되지 않아 mock 응답을 반환합니다. Vercel 대시보드에서 환경변수를 설정하면 Claude Opus 4.8 + Sonnet 4.6 Multi-Agent 실시간 분석이 활성화됩니다.",
       },
     });
   }
@@ -175,7 +175,7 @@ export async function POST(req: Request) {
     const client = new Anthropic({ apiKey });
     // v9.4 비용 절감: 기본 모델 Opus → Sonnet (1회당 비용 1/5)
     // 환경변수 미설정 시에도 Sonnet 호출
-    const opusModel = process.env.CLAUDE_MODEL ?? "claude-sonnet-4-6";
+    const opusModel = process.env.CLAUDE_MODEL ?? "claude-opus-4-8";
     const sonnetModel = process.env.CLAUDE_SONNET_MODEL ?? "claude-sonnet-4-6";
 
     // ?single=true: 베이스라인 측정용 (Opus 단독)
@@ -195,7 +195,7 @@ export async function POST(req: Request) {
       });
     }
 
-    // 기본: Multi-Agent 병렬 호출 (Opus 4.7 + Sonnet 4.6)
+    // 기본: Multi-Agent 병렬 호출 (Opus 4.8 + Sonnet 4.6)
     const t0 = Date.now();
     const [opusResult, sonnetResult] = await Promise.all([
       callModel(client, opusModel, userText, 1200),
@@ -275,10 +275,10 @@ export async function POST(req: Request) {
         categoryMatch: true,
         bsiDelta: 0,
         priorityMatch: true,
-        opus: { category: fallbackCategory.slug, bsi: 72, priority: "단기", model: "claude-opus-4-7 (fallback)" },
+        opus: { category: fallbackCategory.slug, bsi: 72, priority: "단기", model: "claude-opus-4-8 (fallback)" },
         sonnet: { category: fallbackCategory.slug, bsi: 72, priority: "단기", model: "claude-sonnet-4-6 (fallback)" },
       },
-      models: ["claude-opus-4-7", "claude-sonnet-4-6"],
+      models: ["claude-opus-4-8", "claude-sonnet-4-6"],
       latencyMs: 8,
     });
   }

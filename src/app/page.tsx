@@ -85,7 +85,7 @@ export default function HomePage() {
                 className="text-sm sm:text-base text-paper/65 leading-[1.8] max-w-lg animate-reveal-up"
                 style={{ animationDelay: '0.35s', animationFillMode: 'both', wordBreak: 'keep-all' }}
               >
-                GRI는 <strong className="text-paper font-semibold">경기 공공데이터 × Claude Opus 4.7 × Multi-Agent</strong>를 결합한
+                GRI는 <strong className="text-paper font-semibold">경기 공공데이터 × Claude Opus 4.8 × Multi-Agent</strong>를 결합한
                 정책 위험도 지수 플랫폼입니다. 31개 시·군 × 7대 카테고리를 AI가 자동 진단하는
                 GRI 본체(B2G)이며, 주거 카테고리 한 칸을 도민에게 전세사기 위험도로 5초 만에 미리 공개하는 주거 윈도우(B2C 인지도)를 함께 운영합니다.
               </p>
@@ -246,7 +246,7 @@ export default function HomePage() {
           <Pillar
             num="01"
             title="Multi-Agent 진단"
-            body="데이터 탐색 → 위험도 평가 → 정책 추천 3단계 에이전트가 분리 동작. Claude Opus 4.7 (1M context) + RAG로 환각률 6%까지 감소."
+            body="데이터 탐색 → 위험도 평가 → 정책 추천 3단계 에이전트가 분리 동작. Claude Opus 4.8 (1M context) + RAG로 환각을 최소화."
             accent="#003876"
           />
           <Pillar
@@ -285,7 +285,7 @@ export default function HomePage() {
               className="inline-flex items-center gap-1 px-3 py-1.5 rounded-sm text-[11px] font-bold border"
               style={{ fontFamily: 'JetBrains Mono, monospace', borderColor: '#B91C1C', color: '#B91C1C', backgroundColor: 'rgba(185,28,28,0.06)' }}
             >
-              3년 매출 5.7억 →
+              3년 매출 3.0억 →
             </Link>
             <Link
               href="/about"

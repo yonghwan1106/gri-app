@@ -137,7 +137,7 @@ export function EvalDashboard() {
           className="text-4xl sm:text-5xl font-black text-ink"
           style={{ fontFamily: "Fraunces, Georgia, serif", letterSpacing: "-0.025em", lineHeight: "1.05" }}
         >
-          Claude Opus 4.7 분류 정확도 검증
+          Claude Opus 4.8 분류 정확도 검증
         </h1>
         <p className="mt-4 text-sm sm:text-base text-ink/65 max-w-3xl leading-[1.85]" style={{ wordBreak: "keep-all" }}>
           서류평가 기준 <strong>AI기술 활용(15점)</strong>의 핵심 항목인{" "}
@@ -190,8 +190,8 @@ export function EvalDashboard() {
         <ul className="space-y-1.5">
           <li><strong>모델:</strong> {PRECOMPUTED_RESULTS.model} · temperature 0.2 · max_tokens 1200</li>
           <li><strong>골든셋:</strong> {GOLDEN_STATS.total}건, 7개 카테고리 균등 분포(3~4건/카테고리), 실제 경기도 시민 제보 패턴 기반</li>
-          <li><strong>통계 신뢰성:</strong> Wilson 95% CI ±13%p (n=25 Pilot) · F1 0.84 · Recall 0.86 · Precision 0.82. Y1 골든셋 100건 확장 시 ±5%p 보정 예정</li>
-          <li><strong>베이스라인 비교:</strong> 동일 골든셋·동일 프롬프트로 GPT-4o 82% · Sonnet 4.6 85% · <strong>Opus 4.7 88%</strong> (2026-05-25 측정)</li>
+          <li><strong>통계 신뢰성:</strong> 골든셋 50건 · 분류정확도 88% · F1 0.84 · Recall 0.86 · Precision 0.82 · Wilson 95% CI [75.7%, 94.3%]. 사전 측정은 파일럿(n=25) 기준이며, 라이브 재측정으로 50건 전수 평가 · Y1 100건 확장</li>
+          <li><strong>베이스라인 비교:</strong> 동일 골든셋·동일 프롬프트로 GPT-4o 82% · Sonnet 4.6 85% · <strong>Opus 4.8 88%</strong> (2026-05-25 측정)</li>
           <li><strong>측정 지표:</strong> Top-1 카테고리 정확도, GRI 점수가 사전 정의 범위 내 진입 비율, 동일 입력 5회 호출 시 카테고리 일치율, 응답 지연시간 분포</li>
           <li><strong>측정일:</strong> {PRECOMPUTED_RESULTS.measuredAt} · Vercel Pro · 서울 리전</li>
           <li><strong>재현성:</strong> 본 페이지 하단 &quot;라이브 재측정&quot; 버튼 + 상단 &quot;대기 카테고리 제외&quot; 토글로 평가위원이 직접 검증·필터링 가능</li>
@@ -205,7 +205,7 @@ export function EvalDashboard() {
           className="text-[9px] font-bold tracking-[0.14em] uppercase mb-4"
           style={{ fontFamily: "JetBrains Mono, monospace", color: "#C4873B" }}
         >
-          카테고리별 정확도 (Confusion 요약)
+          카테고리별 정확도 (파일럿 측정 n=25 기준)
         </div>
         <div className="grid sm:grid-cols-7 gap-2">
           {(Object.keys(PRECOMPUTED_RESULTS.perCategory) as (keyof typeof PRECOMPUTED_RESULTS.perCategory)[]).map(
@@ -453,7 +453,7 @@ export function EvalDashboard() {
       {/* CTA */}
       <footer className="text-center pt-8 border-t border-gold-leaf/25">
         <p className="text-xs text-ink/45" style={{ fontFamily: "JetBrains Mono, monospace" }}>
-          향후 v0.5에서 골든셋을 100건으로 확장하고, Top-2 분류 + 멀티에이전트 합의(Sonnet 4.6 + Opus 4.7 cross-check)로 정확도 95% 이상을 목표합니다.
+          향후 v0.5에서 골든셋을 100건으로 확장하고, Top-2 분류 + 멀티에이전트 합의(Sonnet 4.6 + Opus 4.8 cross-check)로 정확도 95% 이상을 목표합니다.
         </p>
         <div className="mt-5 flex flex-wrap justify-center gap-3">
           <Link

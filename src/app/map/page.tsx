@@ -2,7 +2,7 @@ import { MapClient } from "@/components/MapClient";
 
 export const metadata = {
   title: "GRI 정책 위험도 지도 — 경기 31개 시·군",
-  description: "경기도 31개 시·군 + 7개 정책 카테고리(의료/교통/장애/대기/주거/안전/교육) GRI 위험도 라이브 지도. Claude Opus 4.7 + Multi-Agent 자동 진단.",
+  description: "경기도 31개 시·군 + 7개 정책 카테고리(의료/교통/장애/대기/주거/안전/교육) GRI 위험도 라이브 지도. Claude Opus 4.8 + Multi-Agent 자동 진단.",
 };
 
 export default function MapPage() {
@@ -26,7 +26,7 @@ export default function MapPage() {
             className="text-sm text-ink/40"
             style={{ fontFamily: "JetBrains Mono, monospace" }}
           >
-            7개 정책 카테고리 · Claude Opus 4.7
+            7개 정책 카테고리 · Claude Opus 4.8
           </span>
         </div>
 
@@ -40,7 +40,7 @@ export default function MapPage() {
         </div>
 
         <p className="mt-3 text-sm text-ink/55 max-w-2xl" style={{ wordBreak: "keep-all" }}>
-          경기 공공데이터 + Claude Opus 4.7 Multi-Agent로 자동 진단된 GRI 위험도 100건.
+          경기 공공데이터 + Claude Opus 4.8 Multi-Agent로 자동 진단된 GRI 위험도 100건.
           카테고리·GRI 점수 필터로 탐색할 수 있습니다.
         </p>
       </header>

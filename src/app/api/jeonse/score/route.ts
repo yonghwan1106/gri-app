@@ -305,10 +305,10 @@ export async function POST(req: Request) {
       assessment: c.response,
       consensus: {
         ...c.consensus,
-        opus: { ...c.consensus.opus, model: "claude-opus-4-7" },
+        opus: { ...c.consensus.opus, model: "claude-opus-4-8" },
         sonnet: { ...c.consensus.sonnet, model: "claude-sonnet-4-6" },
       },
-      models: ["claude-opus-4-7", "claude-sonnet-4-6"],
+      models: ["claude-opus-4-8", "claude-sonnet-4-6"],
       latencyMs: 12,
     });
   }
@@ -358,7 +358,7 @@ export async function POST(req: Request) {
   try {
     const client = new Anthropic({ apiKey });
     // v9.4 비용 절감: 기본 모델 Opus → Sonnet (1회당 비용 1/5)
-    const opusModel = process.env.CLAUDE_MODEL ?? "claude-sonnet-4-6";
+    const opusModel = process.env.CLAUDE_MODEL ?? "claude-opus-4-8";
     const sonnetModel = process.env.CLAUDE_SONNET_MODEL ?? "claude-sonnet-4-6";
 
     // ?single=true: 베이스라인 측정용
@@ -461,10 +461,10 @@ export async function POST(req: Request) {
         levelMatch: true,
         scoreDelta: 0,
         conservativeMode: true,
-        opus: { score: 65, level: "주의", model: "claude-opus-4-7 (fallback)" },
+        opus: { score: 65, level: "주의", model: "claude-opus-4-8 (fallback)" },
         sonnet: { score: 65, level: "주의", model: "claude-sonnet-4-6 (fallback)" },
       },
-      models: ["claude-opus-4-7", "claude-sonnet-4-6"],
+      models: ["claude-opus-4-8", "claude-sonnet-4-6"],
       latencyMs: 8,
     });
   }

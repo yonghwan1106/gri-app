@@ -27,7 +27,7 @@ export default function JeonsePage() {
             전세사기 위험도, <br/><span style={{ color: '#C4873B' }}>5초 안에 알려드립니다</span>
           </h1>
           <p className="mt-4 max-w-2xl text-paper/70 text-sm sm:text-base leading-[1.8]" style={{ wordBreak: 'keep-all' }}>
-            경기 공공데이터(전월세 · 등기 · 실거래가) + Claude Opus 4.7이 임대 매물의 5축 위험을 종합 분석합니다. 계약 전 5초만 투자하세요.
+            경기 공공데이터(전월세 · 등기 · 실거래가) + Claude Opus 4.8이 임대 매물의 5축 위험을 종합 분석합니다. 계약 전 5초만 투자하세요.
           </p>
         </div>
       </section>
@@ -48,7 +48,7 @@ export default function JeonsePage() {
           <InfoCol
             icon="🤖"
             title="AI 모델"
-            body="Claude Opus 4.7 (1M context) + Multi-Agent (탐색·평가·추천 3단계)"
+            body="Claude Opus 4.8 (1M context) + Multi-Agent (탐색·평가·추천 3단계)"
           />
           <InfoCol
             icon="🛡️"

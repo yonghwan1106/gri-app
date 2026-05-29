@@ -97,7 +97,7 @@ export default function DataCatalogPage() {
           제공처 분포
         </div>
         <div className="grid sm:grid-cols-4 gap-3">
-          {(Object.keys(DATASET_STATS.byProvider) as (keyof typeof DATASET_STATS.byProvider)[]).map((key) => (
+          {(Object.keys(DATASET_STATS.byProvider) as (keyof typeof DATASET_STATS.byProvider)[]).filter((key) => DATASET_STATS.byProvider[key] > 0).map((key) => (
             <div
               key={key}
               className="rounded-sm border bg-paper p-4 shadow-ink-sm"
@@ -294,7 +294,7 @@ export default function DataCatalogPage() {
           <li><strong>① 수집:</strong> Open API(실시간) 또는 일·월 배치(GitHub Actions cron)로 raw 데이터 적재 → Vercel Blob/Supabase.</li>
           <li><strong>② 정제:</strong> 시·군 코드 표준화(법정동코드 10자리), 위경도 WGS84 보정, 결측치 마스킹.</li>
           <li><strong>③ 집계:</strong> 시·군 × 카테고리 × 월 단위 피처(z-score, 인구 정규화) 생성 → GRI 산출식 입력.</li>
-          <li><strong>④ 모델:</strong> Claude Opus 4.7이 시민 제보 + 집계 피처를 결합해 카테고리 분류 + GRI 0~95 산출.</li>
+          <li><strong>④ 모델:</strong> Claude Opus 4.8이 시민 제보 + 집계 피처를 결합해 카테고리 분류 + GRI 0~95 산출.</li>
           <li><strong>⑤ 검증:</strong> <Link href="/eval" className="underline" style={{ color: "#1E40AF" }}>/eval 페이지</Link>의 골든셋 정확도 · 일관성 · p95 지연시간을 라이브 측정.</li>
         </ol>
       </section>

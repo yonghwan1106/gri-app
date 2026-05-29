@@ -119,7 +119,7 @@ function SiteFooter() {
               GRI · Gyeonggi Risk Index
             </div>
             <div className="mt-1 text-gold-leaf text-xs tracking-widest uppercase" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
-              경기 공공데이터 × Claude Opus 4.7 × Multi-Agent
+              경기 공공데이터 × Claude Opus 4.8 × Multi-Agent
             </div>
           </div>
           <div className="text-right text-[11px] text-paper/40" style={{ fontFamily: 'JetBrains Mono, monospace' }}>

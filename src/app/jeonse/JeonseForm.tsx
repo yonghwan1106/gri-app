@@ -210,7 +210,7 @@ export function JeonseForm() {
         </button>
 
         <p className="mt-3 text-[10px] text-ink/40 leading-relaxed" style={{ wordBreak: 'keep-all' }}>
-          Claude Opus 4.7로 5축 위험도(보증금/임대인/건물/분쟁/클러스터)를 평가하고, 국토교통부 실거래가 OpenAPI(자동승인 완료)로 인근 시세를 검증합니다.
+          Claude Opus 4.8로 5축 위험도(보증금/임대인/건물/분쟁/클러스터)를 평가하고, 국토교통부 실거래가 OpenAPI(자동승인 완료)로 인근 시세를 검증합니다.
         </p>
       </form>
 
@@ -231,7 +231,7 @@ export function JeonseForm() {
             <p className="text-sm text-ink/60 mb-2">GRI Multi-Agent 분석 중...</p>
             <div className="space-y-1 text-[11px] text-ink/40" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
               <p>· Agent 1: 경기 공공데이터 탐색</p>
-              <p>· Agent 2: 5축 위험도 평가 (Claude Opus 4.7)</p>
+              <p>· Agent 2: 5축 위험도 평가 (Claude Opus 4.8)</p>
               <p>· Agent 3: 국토부 실거래가 검증 (MOLIT API)</p>
             </div>
           </div>
@@ -344,7 +344,7 @@ export function JeonseForm() {
 
             {isMock && (
               <p className="text-[10px] text-ink/35 border-t border-ink/10 pt-2" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
-                ⚠️ Mock 응답 (ANTHROPIC_API_KEY 미설정). Vercel 환경변수 설정 시 Claude Opus 4.7 실시간 분석.
+                ⚠️ Mock 응답 (ANTHROPIC_API_KEY 미설정). Vercel 환경변수 설정 시 Claude Opus 4.8 실시간 분석.
               </p>
             )}
           </div>

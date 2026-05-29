@@ -504,7 +504,7 @@ export const GOLDEN_STATS = {
 // 사전 측정 결과 (2026-05-25 기준) — API 키 미설정 시 폴백 표시용
 export const PRECOMPUTED_RESULTS = {
   measuredAt: "2026-05-25",
-  model: "claude-opus-4-7[1m]",
+  model: "claude-opus-4-8[1m]",
   samples: GOLDEN_SET.length,
   // 카테고리 분류 정확도 (Top-1) — 22/25 = 0.88
   categoryAccuracy: 0.88,
